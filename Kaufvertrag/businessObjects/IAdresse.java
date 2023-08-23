@@ -1,3 +1,5 @@
+package Kaufvertrag.businessObjects;
+
 public interface IAdresse {
     public String getStrasse();
     public void setStrasse(String strasse);

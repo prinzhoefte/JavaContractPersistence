@@ -1,3 +1,5 @@
+package Kaufvertrag.businessObjects;
+
 public interface IKaufvertrag {
     public IVertragspartner getVerkaeufer();
     public void setVerkaeufer(IVertragspartner verkaeufer);

@@ -1,3 +1,5 @@
+package Kaufvertrag.dataLayer.businessObjects;
+
 public class Adresse {
     private String strasse;
     private String hausNr;

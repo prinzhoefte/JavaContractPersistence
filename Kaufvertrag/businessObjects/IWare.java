@@ -1,4 +1,7 @@
+package Kaufvertrag.businessObjects;
+
 import java.util.List;
+
 public interface IWare {
     public long getId();
     public String getBezeichnung();

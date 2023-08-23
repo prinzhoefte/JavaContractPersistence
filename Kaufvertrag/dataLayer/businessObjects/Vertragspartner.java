@@ -1,3 +1,5 @@
+package Kaufvertrag.dataLayer.businessObjects;
+
 public class Vertragspartner {
     private String vorname;
     private String nachname;

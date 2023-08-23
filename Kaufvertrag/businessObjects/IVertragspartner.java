@@ -1,3 +1,5 @@
+package Kaufvertrag.businessObjects;
+
 public interface IVertragspartner {
     public String getAusweisNr();
     public void setAusweisNr(String ausweisNr);

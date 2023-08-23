@@ -1,3 +1,5 @@
+package Kaufvertrag.dataLayer.businessObjects;
+
 public class Kaufvertrag {
     private Vertragspartner verkaeufer;
     private Vertragspartner kaeufer;

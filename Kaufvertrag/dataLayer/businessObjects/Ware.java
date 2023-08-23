@@ -1,3 +1,5 @@
+package Kaufvertrag.dataLayer.businessObjects;
+
 import java.util.List;
 
 public class Ware {

@@ -1,6 +1,8 @@
+package Kaufvertrag.dataLayer.dataAccessObjects;
+
 import java.util.List;
 
-public interface IDao <T,K>{
+public interface IDao <T,K> {
     public T create();
     public void create(T objectToInsert);
     public T read(K id);
