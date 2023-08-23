@@ -9,31 +9,37 @@ import java.sql.Statement;
 
 public class ConnectionManager {
 
-    private String CLASSNAME, CONNECTIONSTRING;
+    private static final String CLASSNAME = "org.sqlite.JDBC";
+    private static final String CONNECTIONSTRING = "jdbc:sqlite:%FILE%"; // URL*
+
     private Connection existingConnection;
-    private boolean classLoaded;
+    private boolean classLoaded = false;
 
     public Connection getNewConnection() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            classLoaded = true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            classLoaded = false;
-            return null;
-        }
 
-        String file = "../../db.sql";
-        String url = "jdbc:sqlite:" + file;
+        if(!classLoaded) {
 
-        try {
-            Connection connection = DriverManager.getConnection(url);
-            existingConnection = connection;
-            return connection;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            try {
+                Class.forName(CLASSNAME);
+                classLoaded = true;
+
+                try {
+                    return existingConnection = DriverManager.getConnection(CONNECTIONSTRING);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                existingConnection.close();
+                return existingConnection = DriverManager.getConnection(CONNECTIONSTRING);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return null;
     }
 
     public Connection getExistingConnection() {
@@ -41,12 +47,11 @@ public class ConnectionManager {
     }
 
     public void close(ResultSet resultSet, Statement statement, Connection connection) {
-    
-
-        PreparedStatement preparedStatement = (PreparedStatement) statement;
 
         try {
-            preparedStatement.executeUpdate();
+            statement.executeUpdate(CLASSNAME);
+            resultSet.close();
+            statement.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
