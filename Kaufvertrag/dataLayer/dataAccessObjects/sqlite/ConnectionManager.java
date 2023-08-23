@@ -2,7 +2,6 @@ package Kaufvertrag.dataLayer.dataAccessObjects.sqlite;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,8 +49,8 @@ public class ConnectionManager {
 
         try {
             statement.executeUpdate(CLASSNAME);
-            resultSet.close();
             statement.close();
+            resultSet.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
