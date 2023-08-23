@@ -3,7 +3,7 @@ package Kaufvertrag.businessObjects;
 public interface IKaufvertrag {
     public IVertragspartner getVerkaeufer();
     public void setVerkaeufer(IVertragspartner verkaeufer);
-    public IVertragspartner getKaeuferr();
+    public IVertragspartner getKaeufer();
     public void setKaeufer(IVertragspartner kaeufer);
     public IWare getWare();
     public void setWare(IWare ware);
