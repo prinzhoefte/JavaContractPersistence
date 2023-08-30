@@ -23,7 +23,6 @@ public class DataLayerManager {
         switch (persistenceType) {
             case "sqlite":
                 return new DataLayerSqlite();
-                break;
             
             case "xml":
                 return new DataLayerXml();
