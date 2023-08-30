@@ -8,8 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sun.org.apache.xerces.internal.util.DOMUtil.getDocument;
-
 public class AdresseDaoXml implements IDao<IAdresse, Long>
 {
   /************************************************************************************/
