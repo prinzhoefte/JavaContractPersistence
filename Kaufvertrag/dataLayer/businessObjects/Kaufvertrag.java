@@ -1,12 +1,12 @@
 package Kaufvertrag.dataLayer.businessObjects;
 
-public class Kaufvertrag {
-    private Vertragspartner verkaeufer;
-    private Vertragspartner kaeufer;
-    private Ware ware;
+public class Kaufvertrag implements IKaufvertrag {
+    private IVertragspartner verkaeufer;
+    private IVertragspartner kaeufer;
+    private IWare ware;
     String zahlungsModalitaeten;
 
-    public Kaufvertrag(Vertragspartner kaeufer, Vertragspartner verkaeufer, Ware ware){
+    public Kaufvertrag(IVertragspartner kaeufer, IVertragspartner verkaeufer, IWare ware){
         this.kaeufer = kaeufer;
         this.verkaeufer = verkaeufer;
         this.ware = ware;

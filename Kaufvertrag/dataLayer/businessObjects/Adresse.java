@@ -1,6 +1,6 @@
 package Kaufvertrag.dataLayer.businessObjects;
 
-public class Adresse {
+public class Adresse implements IAdresse{
     private String strasse;
     private String hausNr;
     private String plz;

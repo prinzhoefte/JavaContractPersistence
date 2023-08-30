@@ -2,7 +2,8 @@ package Kaufvertrag.dataLayer.businessObjects;
 
 import java.util.List;
 
-public class Ware {
+public class Ware implements IWare{
+    private long id;
     private String bezeichnung;
     private String beschreibung;
     private double preis;
@@ -14,6 +15,9 @@ public class Ware {
         this.preis = preis;
     }
 
+    public void setId(long id) {
+        this.id = id; 
+    }
     public String getBezeichnung() {
         return bezeichnung;
     }

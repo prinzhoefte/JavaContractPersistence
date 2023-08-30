@@ -1,15 +1,14 @@
 package Kaufvertrag.dataLayer.businessObjects;
 
-public class Vertragspartner {
+public class Vertragspartner implements IVertragspartner{
     private String vorname;
     private String nachname;
     private String ausweisNr;
-    Adresse adresse;
+    private IAdresse adresse;
 
-    public Vertragspartner(String vorname, String nachname, String ausweisNr) {
+    public Vertragspartner(String vorname, String nachname) {
         this.vorname = vorname;
         this.nachname = nachname;
-        this.ausweisNr = ausweisNr;
     }
 
     public String getVorname() {

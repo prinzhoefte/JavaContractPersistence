@@ -11,5 +11,5 @@ public interface IWare {
     public double getPreis();
     public void setPreis(double preis);
     public List<String> getBesonderheiten();
-    public List<String> getMaenngel();
+    public List<String> getMaengel();
 }
