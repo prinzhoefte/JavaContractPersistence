@@ -25,7 +25,7 @@ public class Vertragspartner implements IVertragspartner{
         return ausweisNr;
     }
 
-    public Adresse getAdresse() {
+    public IAdresse getAdresse() {
         return adresse;
     }
 
@@ -41,7 +41,7 @@ public class Vertragspartner implements IVertragspartner{
         this.ausweisNr = ausweisNr;
     }
 
-    public void setAdresse(Adresse adresse) {
+    public void setAdresse(IAdresse adresse) {
         this.adresse = adresse;
     }
 

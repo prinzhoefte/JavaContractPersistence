@@ -12,7 +12,7 @@ public class DataLayerManager {
     }
 
     public IDataLayer getDataLayer(){
-        
+        return null;
     }
 
     private String readPersistenceTyp(){

@@ -1,5 +1,4 @@
 package Kaufvertrag.dataLayer.businessObjects;
-import Kaufvertrag.businessObjects.IAdresse;
 import Kaufvertrag.businessObjects.IKaufvertrag;
 import Kaufvertrag.businessObjects.IVertragspartner;
 import Kaufvertrag.businessObjects.IWare;
@@ -16,28 +15,35 @@ public class Kaufvertrag implements IKaufvertrag {
         this.ware = ware;
     }
 
-    public Vertragspartner getKaeufer() {
+    public IVertragspartner getKaeufer() {
         return kaeufer;
     }
-    public Vertragspartner getVerkaeufer() {
+
+    public IVertragspartner getVerkaeufer() {
         return verkaeufer;
     }
-    public Ware getWare() {
+
+    public void setVerkaeufer(IVertragspartner verkaeufer) {
+        this.verkaeufer = verkaeufer;
+    }
+
+    public IWare getWare() {
         return ware;
     }
 
-    public void setKaeufer(Vertragspartner kaeufer) {
+    public void setKaeufer(IVertragspartner kaeufer) {
         this.kaeufer = kaeufer;
     }
-    public void setWare(Ware ware){
+
+    public void setWare(IWare ware){
         this.ware = ware;
     }
 
-    public String getZahlungsModalitaeten() {
+    public String getZahlungsModalitaet() {
         return zahlungsModalitaeten;
     }
 
-    public void setZahlungsModalitaeten(String zahlungsModalitaeten) {
+    public void setZahlungsModalitaet(String zahlungsModalitaeten) {
         this.zahlungsModalitaeten = zahlungsModalitaeten;
     }
 
@@ -48,4 +54,5 @@ public class Kaufvertrag implements IKaufvertrag {
                 "PLZ," + "Ort," + "\n" + "Verkaeufer," + verkaeufer + "\n" + "Kaeufer," + kaeufer
                 + "\n" + "Ware," + ware;
     }
+
 }
