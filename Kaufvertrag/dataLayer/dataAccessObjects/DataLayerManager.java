@@ -11,7 +11,7 @@ public class DataLayerManager {
     private String persistenceType;
 
     private DataLayerManager() {
-        System.out.println("Datalayermanager gebildet ...");
+        System.out.println("Datalayermanager created ...");
         readPersistenceType();
     }
 
