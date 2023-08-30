@@ -43,7 +43,7 @@ public class WareDaoXml implements IDao<IWare, Long>
     public void create(IWare objectToInsert) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("adresse");
+            Element root = doc.getElementById("ware");
             Element nodeID = doc.createElement("id");
             //get the id here pls.
             nodeID.setIdAttribute("", true);
@@ -110,7 +110,7 @@ public class WareDaoXml implements IDao<IWare, Long>
     public void delete(Long id) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("adresse");
+            Element root = doc.getElementById("vertragspartner");
             Element nodeID = root.getOwnerDocument().getElementById(id.toString());
             root.removeChild(nodeID);
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
