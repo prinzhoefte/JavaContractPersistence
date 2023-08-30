@@ -45,15 +45,25 @@ public class ConnectionManager {
         return existingConnection;
     }
 
-    public void close(ResultSet resultSet, Statement statement, Connection connection) {
+    // catch on call with dao exception
+    public void close(ResultSet resultSet, Statement statement, Connection connection) throws SQLException {
 
         try {
-            statement.executeUpdate(CLASSNAME);
             statement.close();
-            resultSet.close();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch(SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
     
