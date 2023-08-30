@@ -8,8 +8,8 @@ public interface IWare {
     public void setBezeichnung(String bezeichnung);
     public String getBeschreibung();
     public void setBeschreibung(String beschreibung);
-    public double getPreis();
-    public void setPreis(double preis);
+    public String getPreis();
+    public void setPreis(String preis);
     public List<String> getBesonderheiten();
     public List<String> getMaengel();
 }

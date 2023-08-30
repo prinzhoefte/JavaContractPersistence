@@ -6,11 +6,11 @@ public class Ware implements IWare{
     private long id;
     private String bezeichnung;
     private String beschreibung;
-    private double preis;
+    private String preis;
     List<String> besonderheiten;
     List<String> maengel;
 
-    public Ware(String bezeichnung, double preis) {
+    public Ware(String bezeichnung, String preis) {
         this.bezeichnung = bezeichnung;
         this.preis = preis;
     }
@@ -39,11 +39,11 @@ public class Ware implements IWare{
         this.beschreibung = beschreibung;
     }
 
-    public double getPreis() {
+    public String getPreis() {
         return preis;
     }
 
-    public void setPreis(double preis) {
+    public void setPreis(String preis) {
         this.preis = preis;
     }
 
