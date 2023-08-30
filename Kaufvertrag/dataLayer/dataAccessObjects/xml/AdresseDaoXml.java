@@ -1,8 +1,6 @@
-
-
-import Kaufvertrag.Kaufvertrag.businessObjects.IAdresse;
-import Kaufvertrag.Kaufvertrag.dataLayer.businessObjects.Adresse;
-import Kaufvertrag.Kaufvertrag.dataLayer.dataAccessObjects.IDao;
+import Kaufvertrag.businessObjects.IAdresse;
+import Kaufvertrag.dataLayer.businessObjects.Adresse;
+import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,8 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Kaufvertrag.Kaufvertrag.dataLayer.dataAccessObjects.xml.XMLManager.getDocument;
-import static Kaufvertrag.Kaufvertrag.dataLayer.dataAccessObjects.xml.XMLManager.writeToXML;
+import Kaufvertrag.dataLayer.dataAccessObjects.xml.XMLManager.*;
 
 public class AdresseDaoXml implements IDao<IAdresse, Long>
 {
