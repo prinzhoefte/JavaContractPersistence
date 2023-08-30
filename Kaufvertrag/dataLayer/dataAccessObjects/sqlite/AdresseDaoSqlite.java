@@ -3,7 +3,6 @@ package Kaufvertrag.dataLayer.dataAccessObjects.sqlite;
 import Kaufvertrag.businessObjects.IAdresse;
 import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
-import Kaufvertrag.dataLayer.dataAccessObjects.sqlite.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

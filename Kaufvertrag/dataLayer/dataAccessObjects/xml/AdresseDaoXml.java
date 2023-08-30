@@ -3,15 +3,10 @@ package Kaufvertrag.dataLayer.dataAccessObjects.xml;
 import Kaufvertrag.businessObjects.IAdresse;
 import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import Kaufvertrag.dataLayer.dataAccessObjects.xml.XMLManager.*;
 
 public class AdresseDaoXml implements IDao<IAdresse, Long>
 {
@@ -39,7 +34,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
   {
     try
     {
-      Document doc = getDocument(FILEPATH);
+      Document doc = XMLManager.getDocument(FILEPATH);
       Element root = doc.getElementById("adresse");
       Element nodeID = doc.createElement("id");
       //get the id here pls.
@@ -63,7 +58,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
 
       root.appendChild(nodeID);
       Adresse adresse = new Adresse(strasse.getNodeValue(), hausnummer.getNodeValue(), plz.getNodeValue(), ort.getNodeValue());
-      writeToXML(doc, new FileOutputStream(FILEPATH));
+      XMLManager.writeToXML(doc, new FileOutputStream(FILEPATH));
       return adresse;
     }
     catch (IOException ex)
@@ -78,7 +73,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
   {
     try
     {
-      Document doc = getDocument(FILEPATH);
+      Document doc = XMLManager.getDocument(FILEPATH);
       Element root = doc.getElementById("adresse");
       Element nodeID = doc.createElement("id");
       //get the id here pls.
@@ -101,7 +96,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
       nodeID.appendChild(ort);
 
       root.appendChild(nodeID);
-      writeToXML(doc, new FileOutputStream(FILEPATH));
+      XMLManager.writeToXML(doc, new FileOutputStream(FILEPATH));
     }
     catch (IOException ex)
     {
@@ -112,7 +107,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
   @Override
   public IAdresse read(Long id)
   {
-    Document doc = getDocument(FILEPATH);
+    Document doc = XMLManager.getDocument(FILEPATH);
     Element root = doc.getElementById("adresse");
     Element nodeID = root.getOwnerDocument().getElementById(id.toString());
     Adresse adresse = new Adresse(nodeID.getElementsByTagName("strasse").item(0).getNodeValue(), nodeID.getElementsByTagName("hausnummer").item(0).getNodeValue(), nodeID.getElementsByTagName("postleitzahl").item(0).getNodeValue(), nodeID.getElementsByTagName("ort").item(0).getNodeValue());
@@ -122,7 +117,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
   @Override
   public List<IAdresse> readAll()
   {
-    Document doc = getDocument(FILEPATH);
+    Document doc = XMLManager.getDocument(FILEPATH);
     Element root = doc.getElementById("adresse");
     List<IAdresse> adressListe = new ArrayList<>();
     NodeList adressen = root.getElementsByTagName("id");
@@ -139,7 +134,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
   {
     try
     {
-      Document doc = getDocument(FILEPATH);
+      Document doc = XMLManager.getDocument(FILEPATH);
       Element root = doc.getElementById("adresse");
       //get the id here pls.
       Element nodeID = root.getOwnerDocument().getElementById("");
@@ -156,7 +151,7 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
       Node ort = nodeID.getElementsByTagName("ort").item(0);
       ort.setNodeValue(objectToUpdate.getOrt());
 
-      writeToXML(doc, new FileOutputStream(FILEPATH));
+      XMLManager.writeToXML(doc, new FileOutputStream(FILEPATH));
     }
     catch (IOException ex)
     {
@@ -169,11 +164,11 @@ public class AdresseDaoXml implements IDao<IAdresse, Long>
   {
     try
     {
-      Document doc = getDocument(FILEPATH);
+      Document doc = XMLManager.getDocument(FILEPATH);
       Element root = doc.getElementById("adresse");
       Element nodeID = root.getOwnerDocument().getElementById(id.toString());
       root.removeChild(nodeID);
-      writeToXML(doc, new FileOutputStream(FILEPATH));
+      XMLManager.writeToXML(doc, new FileOutputStream(FILEPATH));
     }
       catch (IOException ex)
     {
