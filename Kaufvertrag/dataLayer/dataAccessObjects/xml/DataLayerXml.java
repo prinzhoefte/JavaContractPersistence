@@ -1,5 +1,5 @@
 package Kaufvertrag.dataLayer.dataAccessObjects.xml;
 
-public class DataLayerXml {
+public class DataLayerXml implements IDataLayer {
     
 }

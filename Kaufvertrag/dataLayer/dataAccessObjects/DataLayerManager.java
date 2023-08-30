@@ -1,10 +1,11 @@
 package Kaufvertrag.dataLayer.dataAccessObjects;
 
 public class DataLayerManager {
-    private DataLayerManager instance;
-    private String persistenceTyp;
+    private static final DataLayerManager instance = new DataLayerManager();
+    private String persistenceType;
 
     private DataLayerManager() {
+        System.out.println("Datalayermanager gebildet ...")
     }
 
     public DataLayerManager getInstance(){
@@ -12,14 +13,21 @@ public class DataLayerManager {
     }
 
     public IDataLayer getDataLayer(){
-        return null;
+        switch (this.persistenceType) {
+            case "sqlite":
+                return new DataLayerSqlite();
+                break;
+            
+            case "xml":
+                return new DataLayerXml();
+
+            default:
+                throw new DaoException("No valid persistenceType");
+        }
     }
 
-    private String readPersistenceTyp(){
-        return persistenceTyp;
+    private String readPersistenceTyp(String persistenceType){ //Eigentlich mit dem Gui verknüpft
+        this.persistenceType = persistenceType;
     }
-
-
-
 
 }
