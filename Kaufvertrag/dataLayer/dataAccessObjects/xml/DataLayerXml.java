@@ -9,14 +9,16 @@ public class DataLayerXml implements IDataLayer {
 
     @Override
     public IDao<IVertragspartner, String> getDaoVertragspartner() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDaoVertragspartner'");
+        IDao vertragspartnerDaoXml = new VertragspartnerDaoXml();
+        
+        return vertragspartnerDaoXml;
     }
 
     @Override
     public IDao<IWare, Long> getDaoWare() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDaoWare'");
+        IDao wareDaoXml = new WareDaoXml();
+
+        return wareDaoXml;
     }
     
 }

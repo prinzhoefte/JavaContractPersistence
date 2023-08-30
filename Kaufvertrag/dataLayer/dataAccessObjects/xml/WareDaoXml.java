@@ -3,6 +3,7 @@ package Kaufvertrag.dataLayer.dataAccessObjects.xml;
 import Kaufvertrag.businessObjects.IWare;
 import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
+import Kaufvertrag.presentationLayer.exceptions.DaoException;
 import org.w3c.dom.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ public class WareDaoXml implements IDao<IWare, Long>
             Document doc = ServiceXml.getDocument(FILEPATH);
             Element root = doc.getElementById("ware");
             Element nodeID = doc.createElement("id");
-            //get the id here pls.
             nodeID.setIdAttribute("", true);
 
             Element bezeichnung = doc.createElement("bezeichnung");
@@ -33,7 +33,7 @@ public class WareDaoXml implements IDao<IWare, Long>
             Ware ware = new Ware(bezeichnung.getNodeValue(), preis.getNodeValue());
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
             return ware;
-        } catch (IOException ex) {
+        } catch (IOException | DaoException ex) {
             System.out.println("There was an unexpected Exception in WareDaoXml#create().");
         }
         return null;
@@ -45,7 +45,6 @@ public class WareDaoXml implements IDao<IWare, Long>
             Document doc = ServiceXml.getDocument(FILEPATH);
             Element root = doc.getElementById("ware");
             Element nodeID = doc.createElement("id");
-            //get the id here pls.
             nodeID.setIdAttribute("", true);
 
             Element bezeichnung = doc.createElement("bezeichnung");
@@ -58,30 +57,41 @@ public class WareDaoXml implements IDao<IWare, Long>
 
             root.appendChild(nodeID);
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
-        } catch (IOException ex) {
+        } catch (IOException | DaoException ex) {
             System.out.println("There was an unexpected Exception in WareDaoXml#create(IWare objectToInsert).");
         }
     }
 
     @Override
     public IWare read(Long id) {
-        Document doc = ServiceXml.getDocument(FILEPATH);
-        Element root = doc.getElementById("ware");
-        Element nodeID = root.getOwnerDocument().getElementById(id.toString());
-        Ware ware = new Ware(nodeID.getElementsByTagName("bezeichnung").item(0).getNodeValue(), nodeID.getElementsByTagName("preis").item(0).getNodeValue());
+        Document doc;
+        Ware ware = null;
+        try {
+            doc = ServiceXml.getDocument(FILEPATH);
+            Element root = doc.getElementById("ware");
+            Element nodeID = root.getOwnerDocument().getElementById(id.toString());
+            ware = new Ware(nodeID.getElementsByTagName("bezeichnung").item(0).getNodeValue(), nodeID.getElementsByTagName("preis").item(0).getNodeValue());    
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         return ware;
     }
 
     @Override
     public List<IWare> readAll() {
-        Document doc = ServiceXml.getDocument(FILEPATH);
-        Element root = doc.getElementById("ware");
+        Document doc;
         List<IWare> warenListe = new ArrayList<>();
-        NodeList waren = root.getElementsByTagName("id");
-        for (int i = 0; i < waren.getLength(); i++)
-        {
-            NodeList childs = waren.item(i).getChildNodes();
-            warenListe.add(new Ware(childs.item(0).getNodeValue(), childs.item(1).getNodeValue()));
+        try {
+            doc = ServiceXml.getDocument(FILEPATH);
+            Element root = doc.getElementById("ware");
+            NodeList waren = root.getElementsByTagName("id");
+            for (int i = 0; i < waren.getLength(); i++)
+            {
+                NodeList childs = waren.item(i).getChildNodes();
+                warenListe.add(new Ware(childs.item(0).getNodeValue(), childs.item(1).getNodeValue()));
+            }
+        } catch (DaoException e) {
+            System.out.println("There was an unexpected Exception in WareDaoXml#readAll().");
         }
         return warenListe;
     }
@@ -91,7 +101,6 @@ public class WareDaoXml implements IDao<IWare, Long>
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
             Element root = doc.getElementById("ware");
-            //get the id here pls.
             Element nodeID = root.getOwnerDocument().getElementById("");
 
             Node bezeichnung = nodeID.getElementsByTagName("bezeichnung").item(0);
@@ -101,7 +110,7 @@ public class WareDaoXml implements IDao<IWare, Long>
             preis.setNodeValue(objectToUpdate.getPreis());
 
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
-        } catch (IOException ex) {
+        } catch (IOException | DaoException ex) {
             System.out.println("There was an unexpected Exception in WareDaoXml#update(IWare objectToUpdate).");
         }
     }
@@ -114,7 +123,7 @@ public class WareDaoXml implements IDao<IWare, Long>
             Element nodeID = root.getOwnerDocument().getElementById(id.toString());
             root.removeChild(nodeID);
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
-        } catch (IOException ex) {
+        } catch (IOException | DaoException ex) {
             System.out.println("There was an unexpected Exception in WareDaoXml#delete(Long id).");
         }
     }
