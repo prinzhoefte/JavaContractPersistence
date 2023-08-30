@@ -1,5 +1,8 @@
 package Kaufvertrag.dataLayer.dataAccessObjects;
 
+import java.util.Scanner;
+
+import Kaufvertrag.dataLayer.dataAccessObjects.sqlite.DataLayerSqlite;
 import Kaufvertrag.dataLayer.dataAccessObjects.xml.DataLayerXml;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
@@ -9,6 +12,7 @@ public class DataLayerManager {
 
     private DataLayerManager() {
         System.out.println("Datalayermanager gebildet ...");
+        readPersistenceType();
     }
 
     public DataLayerManager getInstance(){
@@ -29,9 +33,19 @@ public class DataLayerManager {
         }
     }
 
-    private String readPersistenceTyp(String persistenceType){ //Eigentlich mit dem Gui verknüpft
-        this.persistenceType = persistenceType;
-        return persistenceType;
+    private String readPersistenceType() {
+
+        String persistenceType = "";
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("Choose Persistence Type: XML or SQLite");
+            persistenceType = scanner.nextLine();
+        } while(persistenceType.equalsIgnoreCase("xml") || persistenceType.equalsIgnoreCase("sqlite"));
+
+        scanner.close();
+
+        return this.persistenceType = persistenceType;
     }
 
 }
