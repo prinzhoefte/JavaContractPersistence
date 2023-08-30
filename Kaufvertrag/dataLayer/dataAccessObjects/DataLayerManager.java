@@ -20,7 +20,7 @@ public class DataLayerManager {
     }
 
     public IDataLayer getDataLayer() throws DaoException {
-        switch (this.persistenceType) {
+        switch (persistenceType) {
             case "sqlite":
                 return new DataLayerSqlite();
                 break;
