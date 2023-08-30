@@ -1,3 +1,5 @@
+package Kaufvertrag.dataLayer.dataAccessObjects.xml;
+
 import Kaufvertrag.businessObjects.IAdresse;
 import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;

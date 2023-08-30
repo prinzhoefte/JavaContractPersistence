@@ -1,3 +1,5 @@
+package Kaufvertrag.dataLayer.dataAccessObjects.xml;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
