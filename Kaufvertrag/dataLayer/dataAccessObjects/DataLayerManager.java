@@ -10,9 +10,10 @@ public class DataLayerManager {
     public DataLayerManager getInstance(){
         return instance;
     }
-    //   public IDataLayer getDataLayer(){
-    //      return
-    // }
+
+    public IDataLayer getDataLayer(){
+        
+    }
 
     private String readPersistenceTyp(){
         return persistenceTyp;
