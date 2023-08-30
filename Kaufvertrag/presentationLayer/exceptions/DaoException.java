@@ -1,6 +1,6 @@
-package Kaufvertrag.exceptions;
+package Kaufvertrag.presentationLayer.exceptions;
 
-public class DaoException extends Exeption{
+public class DaoException extends Exception{
     public DaoException(String message){
         super(message);
     }

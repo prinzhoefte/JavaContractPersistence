@@ -1,5 +1,6 @@
 package Kaufvertrag.dataLayer.dataAccessObjects.xml;
 
-public class WareDaoXml<IWare> {
+import java.util.List;
 
+public class WareDaoXml<IWare> {
 }
