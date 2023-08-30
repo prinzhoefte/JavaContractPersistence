@@ -1,5 +1,5 @@
 package Kaufvertrag.dataLayer.businessObjects;
-
+import Kaufvertrag.businessObjects.IWare;
 import java.util.List;
 
 public class Ware implements IWare{

@@ -1,4 +1,8 @@
 package Kaufvertrag.dataLayer.businessObjects;
+import Kaufvertrag.businessObjects.IAdresse;
+import Kaufvertrag.businessObjects.IKaufvertrag;
+import Kaufvertrag.businessObjects.IVertragspartner;
+import Kaufvertrag.businessObjects.IWare;
 
 public class Kaufvertrag implements IKaufvertrag {
     private IVertragspartner verkaeufer;
