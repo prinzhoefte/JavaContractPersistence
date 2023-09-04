@@ -40,7 +40,7 @@ public class DataLayerManager {
         do {
             System.out.println("Choose Persistence Type: XML or SQLite");
             persistenceType = scanner.nextLine();
-        } while(persistenceType.equalsIgnoreCase("xml") || persistenceType.equalsIgnoreCase("sqlite"));
+        } while(!persistenceType.equalsIgnoreCase("xml") || !persistenceType.equalsIgnoreCase("sqlite"));
 
         scanner.close();
 
