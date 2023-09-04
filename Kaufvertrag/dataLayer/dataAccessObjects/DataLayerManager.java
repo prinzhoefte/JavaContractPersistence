@@ -15,7 +15,7 @@ public class DataLayerManager {
         readPersistenceType();
     }
 
-    public DataLayerManager getInstance(){
+    public static DataLayerManager getInstance(){
         return instance;
     }
 
