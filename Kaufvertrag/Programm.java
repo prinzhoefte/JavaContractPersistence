@@ -9,8 +9,6 @@ import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
 public class Programm {
     public static void main(String[] args) throws RuntimeException {
-  //      System.out.println("Mach Irgendwas!");
-
         try {
             //Datenzugriffsschicht-Manager initialisieren
             DataLayerManager dataLayerManager = DataLayerManager.getInstance();
@@ -19,6 +17,8 @@ public class Programm {
             //Vertragspartner erstellen
             IVertragspartner seller = new Vertragspartner("Max", "Mustermann");
             IVertragspartner buyer = new Vertragspartner("Anna", "Mustermann");
+            seller.setAusweisNr("73567");
+            buyer.setAusweisNr("73642");
 
             //Adresse erstellen
             IAdresse sellerAddress = new Adresse("Musterstraße", "123", "12345", "Musterstadt");
@@ -32,15 +32,19 @@ public class Programm {
             IWare item = new Ware("Beispielware", "100.00");
             IKaufvertrag contract = new Kaufvertrag(buyer, seller, item);
             contract.setZahlungsModalitaet("Barzahlung");
+            item.setId(0);
 
             //DAOs abrufen und Daten speichern
             IDao<IVertragspartner, String> vertragspartnerStringIDao = dataLayer.getDaoVertragspartner();
             IDao<IWare, Long> wareLongIDao = dataLayer.getDaoWare();
 
+            //Daten in Doas speichern
             vertragspartnerStringIDao.create(seller);
             vertragspartnerStringIDao.create(buyer);
+            wareLongIDao.create(item);
 
-            long itemId = wareLongIDao.create().getId();
+            //Item ID auslesen
+            long itemId = item.getId();
 
             //Daten auslesen und anzeigen
             System.out.println("Kaufvertragsdetails: ");
@@ -53,7 +57,6 @@ public class Programm {
             System.out.println("\nGekaufte Ware: ");
             IWare retrievedItem = wareLongIDao.read(itemId);
             System.out.println(retrievedItem.toString());
-
 
         } catch (DaoException e) {
             throw new RuntimeException(e);

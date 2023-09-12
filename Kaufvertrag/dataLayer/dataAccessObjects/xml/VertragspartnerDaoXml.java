@@ -9,9 +9,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VertragspartnerDaoXml implements IDao<IVertragspartner, Long>
+public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
 {
-    private static final String FILEPATH = "dataLayer/dataAccessObjects/xml/vertragspartner.xml";
+    private static final String FILEPATH = "vertraege.xml";
 
     @Override
     public IVertragspartner create() {
@@ -43,20 +43,20 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, Long>
     public void create(IVertragspartner objectToInsert) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            Element nodeID = doc.createElement("id");
-            //get the id here pls.
-            nodeID.setIdAttribute("", true);
+            Element root = doc.getDocumentElement(); // Get the root element
 
-            Element vorname = doc.createElement("vorname");
-            vorname.setNodeValue(objectToInsert.getVorname());
-            nodeID.appendChild(vorname);
-
-            Element nachname = doc.createElement("nachname");
-            nachname.setNodeValue(objectToInsert.getNachname());
-            nodeID.appendChild(nachname);
-
-            root.appendChild(nodeID);
+            // Create a new "vertragspartner" element
+            Element vertragspartnerElement = doc.createElement("vertragspartner");
+            
+            // Create and set attributes for the "vertragspartner" element
+            vertragspartnerElement.setAttribute("id", objectToInsert.getAusweisNr());
+            vertragspartnerElement.setAttribute("vorname", objectToInsert.getVorname());
+            vertragspartnerElement.setAttribute("nachname", objectToInsert.getNachname());
+    
+            // Append the "vertragspartner" element to the root
+            root.appendChild(vertragspartnerElement);
+    
+            // Write the updated document back to the XML file
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
             System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#create(IVertragspartner objectToInsert).");
@@ -64,16 +64,16 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, Long>
     }
 
     @Override
-    public IVertragspartner read(Long id) {
+    public IVertragspartner read(String id) {
         Document doc;
         Vertragspartner vertragspartner = null;
         try {
             doc = ServiceXml.getDocument(FILEPATH);
             Element root = doc.getElementById("vertragspartner");
-            Element nodeID = root.getOwnerDocument().getElementById(id.toString());
+            Element nodeID = root.getOwnerDocument().getElementById(id);
             vertragspartner = new Vertragspartner(nodeID.getElementsByTagName("vorname").item(0).getNodeValue(), nodeID.getElementsByTagName("nachname").item(0).getNodeValue());    
         } catch (DaoException e) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#read(Long id).");
+            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#read(String id).");
         }
         return vertragspartner;
     }
@@ -120,11 +120,11 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, Long>
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
             Element root = doc.getElementById("vertragspartner");
-            Element nodeID = root.getOwnerDocument().getElementById(id.toString());
+            Element nodeID = root.getOwnerDocument().getElementById(id);
             root.removeChild(nodeID);
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {

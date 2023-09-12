@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WareDaoXml implements IDao<IWare, Long>
 {
-    private static final String FILEPATH = "dataLayer/dataAccessObjects/xml/ware.xml";
+    private static final String FILEPATH = "vertraege.xml";
 
     @Override
     public IWare create() {
@@ -43,19 +43,20 @@ public class WareDaoXml implements IDao<IWare, Long>
     public void create(IWare objectToInsert) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("ware");
-            Element nodeID = doc.createElement("id");
-            nodeID.setIdAttribute("", true);
+            Element root = doc.getDocumentElement(); // Get the root element
 
-            Element bezeichnung = doc.createElement("bezeichnung");
-            bezeichnung.setNodeValue(objectToInsert.getBeschreibung());
-            nodeID.appendChild(bezeichnung);
-
-            Element preis = doc.createElement("preis");
-            preis.setNodeValue(objectToInsert.getPreis());
-            nodeID.appendChild(preis);
-
-            root.appendChild(nodeID);
+            // Create a new "vertragspartner" element
+            Element wareElement = doc.createElement("ware");
+            
+            // Create and set attributes for the "vertragspartner" element
+            wareElement.setAttribute("id", String.valueOf(objectToInsert.getId()));
+            wareElement.setAttribute("bezeichnung", objectToInsert.getBezeichnung());
+            wareElement.setAttribute("preis", objectToInsert.getPreis());
+    
+            // Append the "vertragspartner" element to the root
+            root.appendChild(wareElement);
+    
+            // Write the updated document back to the XML file
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
             System.out.println("There was an unexpected Exception in WareDaoXml#create(IWare objectToInsert).");

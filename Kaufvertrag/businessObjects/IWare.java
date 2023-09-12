@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface IWare {
     public long getId();
+    public void setId(long id);
     public String getBezeichnung();
     public void setBezeichnung(String bezeichnung);
     public String getBeschreibung();

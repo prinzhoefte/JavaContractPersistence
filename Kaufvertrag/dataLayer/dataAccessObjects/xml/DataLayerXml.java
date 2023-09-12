@@ -8,17 +8,13 @@ import Kaufvertrag.dataLayer.dataAccessObjects.IDataLayer;
 public class DataLayerXml implements IDataLayer {
 
     @Override
-    public IDao<IVertragspartner, String> getDaoVertragspartner() {
-        IDao vertragspartnerDaoXml = new VertragspartnerDaoXml();
-        
-        return vertragspartnerDaoXml;
+    public IDao<IVertragspartner, String> getDaoVertragspartner() {        
+        return new VertragspartnerDaoXml();
     }
 
     @Override
     public IDao<IWare, Long> getDaoWare() {
-        IDao wareDaoXml = new WareDaoXml();
-
-        return wareDaoXml;
+        return new WareDaoXml();
     }
     
 }

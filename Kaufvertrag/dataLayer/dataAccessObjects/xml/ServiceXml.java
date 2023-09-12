@@ -23,7 +23,7 @@ public class ServiceXml
                 return docBuilder.parse(file);
             }
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("adresse");
+            Element rootElement = doc.createElement("kaufvertrag");
             doc.appendChild(rootElement);
             return doc;
         } catch (SAXException | IOException | ParserConfigurationException ex) {
