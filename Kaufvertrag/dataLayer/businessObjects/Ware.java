@@ -13,6 +13,7 @@ public class Ware implements IWare{
     public Ware(String bezeichnung, String preis) {
         this.bezeichnung = bezeichnung;
         this.preis = preis;
+        this.beschreibung = "";
     }
 
     public void setId(long id) {
@@ -57,10 +58,13 @@ public class Ware implements IWare{
 
     @Override
     public String toString() {
-        return  bezeichnung + "," +
-                beschreibung + "," +
-                preis + "," +
-                besonderheiten + "," +
-                maengel;
+        return "Ware{" +
+                "id=" + id +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", beschreibung='" + beschreibung + '\'' +
+                ", preis='" + preis + '\'' +
+                ", besonderheiten=" + besonderheiten +
+                ", maengel=" + maengel +
+                '}';
     }
 }

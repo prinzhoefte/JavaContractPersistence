@@ -51,12 +51,17 @@ public class Programm {
             System.out.println(contract.toString());
 
             System.out.println("\nVerkäuferdetails: ");
-            IVertragspartner retrievedSeller = vertragspartnerStringIDao.read(seller.getNachname());
+            IVertragspartner retrievedSeller = vertragspartnerStringIDao.read(seller.getAusweisNr());
             System.out.println(retrievedSeller.toString());
 
             System.out.println("\nGekaufte Ware: ");
             IWare retrievedItem = wareLongIDao.read(itemId);
             System.out.println(retrievedItem.toString());
+
+            System.out.println("\nAlle Vertragspartner: ");
+            System.out.println(vertragspartnerStringIDao.readAll());
+            System.out.println("\nAlle Waren: ");
+            System.out.println(wareLongIDao.readAll());
 
         } catch (DaoException e) {
             throw new RuntimeException(e);

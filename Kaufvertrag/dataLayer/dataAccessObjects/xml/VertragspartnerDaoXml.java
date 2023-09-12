@@ -14,32 +14,6 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
     private static final String FILEPATH = "vertraege.xml";
 
     @Override
-    public IVertragspartner create() {
-        try {
-            Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            Element nodeID = doc.createElement("id");
-            nodeID.setIdAttribute("", true);
-
-            Element vorname = doc.createElement("vorname");
-            vorname.setNodeValue("");
-            nodeID.appendChild(vorname);
-
-            Element nachname = doc.createElement("nachname");
-            nachname.setNodeValue("");
-            nodeID.appendChild(nachname);
-
-            root.appendChild(nodeID);
-            Vertragspartner vertragspartner = new Vertragspartner(vorname.getNodeValue(), nachname.getNodeValue());
-            ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
-            return vertragspartner;
-        } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#create().");
-        }
-        return null;
-    }
-
-    @Override
     public void create(IVertragspartner objectToInsert) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
@@ -59,76 +33,114 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
             // Write the updated document back to the XML file
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#create(IVertragspartner objectToInsert).");
+            System.out.println("Error in VertragspartnerDaoXml#create(IVertragspartner objectToInsert).");
         }
     }
 
+    // Read a "Vertragspartner" by its ID
     @Override
     public IVertragspartner read(String id) {
         Document doc;
         Vertragspartner vertragspartner = null;
         try {
             doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            Element nodeID = root.getOwnerDocument().getElementById(id);
-            vertragspartner = new Vertragspartner(nodeID.getElementsByTagName("vorname").item(0).getNodeValue(), nodeID.getElementsByTagName("nachname").item(0).getNodeValue());    
+            Element root = doc.getDocumentElement();
+            NodeList vertragspartnerList = root.getElementsByTagName("vertragspartner");
+            
+            for (int i = 0; i < vertragspartnerList.getLength(); i++) {
+                Element vertragspartnerElement = (Element) vertragspartnerList.item(i);
+                String partnerId = vertragspartnerElement.getAttribute("id");
+                
+                if (partnerId.equals(id)) {
+                    String vorname = vertragspartnerElement.getAttribute("vorname");
+                    String nachname = vertragspartnerElement.getAttribute("nachname");
+                    vertragspartner = new Vertragspartner(vorname, nachname);
+                    vertragspartner.setAusweisNr(partnerId);
+                    break; // Found the matching vertragspartner, exit the loop
+                }
+            }
         } catch (DaoException e) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#read(String id).");
+            System.out.println("Error in VertragspartnerDaoXml#read(String id).");
         }
         return vertragspartner;
     }
 
+    // List all "Vertragspartner"
     @Override
     public List<IVertragspartner> readAll() {
         Document doc;
-        List<IVertragspartner> vertragspartnerListe = null;
+        List<IVertragspartner> vertragspartnerListe = new ArrayList<>();
         try {
             doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            vertragspartnerListe = new ArrayList<>();
-            NodeList vertragspartner = root.getElementsByTagName("id");
-            for (int i = 0; i < vertragspartner.getLength(); i++)
-            {
-                NodeList childs = vertragspartner.item(i).getChildNodes();
-                vertragspartnerListe.add(new Vertragspartner(childs.item(0).getNodeValue(), childs.item(1).getNodeValue()));
+            Element root = doc.getDocumentElement();
+            NodeList vertragspartnerElements = root.getElementsByTagName("vertragspartner");
+            
+            for (int i = 0; i < vertragspartnerElements.getLength(); i++) {
+                Element vertragspartnerElement = (Element) vertragspartnerElements.item(i);
+                String vorname = vertragspartnerElement.getAttribute("vorname");
+                String nachname = vertragspartnerElement.getAttribute("nachname");
+                vertragspartnerListe.add(new Vertragspartner(vorname, nachname));
             }
         } catch (DaoException e) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#readAll().");
+            System.out.println("Error in VertragspartnerDaoXml#readAll().");
             return null;
         }
         return vertragspartnerListe;
     }
 
+    // Update a "Vertragspartner" by id (AusweisNr)
     @Override
     public void update(IVertragspartner objectToUpdate) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            //get the id here pls.
-            Element nodeID = root.getOwnerDocument().getElementById("");
-
-            Node vorname = nodeID.getElementsByTagName("vorname").item(0);
-            vorname.setNodeValue(objectToUpdate.getVorname());
-
-            Node nachname = nodeID.getElementsByTagName("nachname").item(0);
-            nachname.setNodeValue(objectToUpdate.getNachname());
-
+            Element root = doc.getDocumentElement();
+            NodeList vertragspartnerElements = root.getElementsByTagName("vertragspartner");
+            
+            for (int i = 0; i < vertragspartnerElements.getLength(); i++) {
+                Element vertragspartnerElement = (Element) vertragspartnerElements.item(i);
+                String id = vertragspartnerElement.getAttribute("id");
+                
+                if (id.equals(objectToUpdate.getAusweisNr())) {
+                    // Update "vorname" and "nachname" attributes
+                    vertragspartnerElement.setAttribute("vorname", objectToUpdate.getVorname());
+                    vertragspartnerElement.setAttribute("nachname", objectToUpdate.getNachname());
+                    break; // Updated the matching vertragspartner, exit the loop
+                }
+            }
+            
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#update(IVertragspartner objectToUpdate).");
+            System.out.println("Error in VertragspartnerDaoXml#update(IVertragspartner objectToUpdate).");
         }
     }
 
+    // Delete a "Vertragspartner" by id (AusweisNr)
     @Override
     public void delete(String id) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            Element nodeID = root.getOwnerDocument().getElementById(id);
-            root.removeChild(nodeID);
+            Element root = doc.getDocumentElement();
+            NodeList vertragspartnerElements = root.getElementsByTagName("vertragspartner");
+            
+            for (int i = 0; i < vertragspartnerElements.getLength(); i++) {
+                Element vertragspartnerElement = (Element) vertragspartnerElements.item(i);
+                String partnerId = vertragspartnerElement.getAttribute("id");
+                
+                if (partnerId.equals(id)) {
+                    root.removeChild(vertragspartnerElement);
+                    break; // Removed the matching vertragspartner, exit the loop
+                }
+            }
+            
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in VertragspartnerDaoXml#delete(Long id).");
+            System.out.println("Error in VertragspartnerDaoXml#delete(String id)");
         }
+    }
+
+    // Dont need that method but it is required by the interface
+    @Override
+    public IVertragspartner create() {
+        throw new UnsupportedOperationException("Unimplemented method 'create()'");
     }
 }

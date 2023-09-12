@@ -13,119 +13,135 @@ public class WareDaoXml implements IDao<IWare, Long>
 {
     private static final String FILEPATH = "vertraege.xml";
 
-    @Override
-    public IWare create() {
-        try {
-            Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("ware");
-            Element nodeID = doc.createElement("id");
-            nodeID.setIdAttribute("", true);
-
-            Element bezeichnung = doc.createElement("bezeichnung");
-            bezeichnung.setNodeValue("");
-            nodeID.appendChild(bezeichnung);
-
-            Element preis = doc.createElement("preis");
-            preis.setNodeValue("");
-            nodeID.appendChild(preis);
-
-            root.appendChild(nodeID);
-            Ware ware = new Ware(bezeichnung.getNodeValue(), preis.getNodeValue());
-            ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
-            return ware;
-        } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in WareDaoXml#create().");
-        }
-        return null;
-    }
-
+    // Create a new "ware" element and append it to the root
     @Override
     public void create(IWare objectToInsert) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getDocumentElement(); // Get the root element
+            // Get the root element
+            Element root = doc.getDocumentElement();
 
-            // Create a new "vertragspartner" element
+            // Create a new "ware" element
             Element wareElement = doc.createElement("ware");
             
-            // Create and set attributes for the "vertragspartner" element
+            // Create and set attributes for the "ware" element
             wareElement.setAttribute("id", String.valueOf(objectToInsert.getId()));
             wareElement.setAttribute("bezeichnung", objectToInsert.getBezeichnung());
             wareElement.setAttribute("preis", objectToInsert.getPreis());
     
-            // Append the "vertragspartner" element to the root
+            // Append the "ware" element to the root
             root.appendChild(wareElement);
     
             // Write the updated document back to the XML file
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in WareDaoXml#create(IWare objectToInsert).");
+            System.out.println("Error in WareDaoXml#create(IWare objectToInsert).");
         }
     }
 
+    // Read a "ware" element from the XML file by its ID 
     @Override
     public IWare read(Long id) {
         Document doc;
         Ware ware = null;
         try {
             doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("ware");
-            Element nodeID = root.getOwnerDocument().getElementById(id.toString());
-            ware = new Ware(nodeID.getElementsByTagName("bezeichnung").item(0).getNodeValue(), nodeID.getElementsByTagName("preis").item(0).getNodeValue());    
+            Element root = doc.getDocumentElement();
+            NodeList wareList = root.getElementsByTagName("ware");
+            
+            for (int i = 0; i < wareList.getLength(); i++) {
+                Element wareElement = (Element) wareList.item(i);
+                String wareId = wareElement.getAttribute("id");
+                
+                if (wareId.equals(id.toString())) {
+                    String bezeichnung = wareElement.getAttribute("bezeichnung");
+                    String preis = wareElement.getAttribute("preis");
+                    ware = new Ware(bezeichnung, preis);
+                    break; // Found the matching ware, exit the loop
+                }
+            }
         } catch (DaoException e) {
             e.printStackTrace();
         }
         return ware;
     }
 
+    // Read all "ware" elements from the XML file
     @Override
     public List<IWare> readAll() {
         Document doc;
         List<IWare> warenListe = new ArrayList<>();
         try {
             doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("ware");
-            NodeList waren = root.getElementsByTagName("id");
-            for (int i = 0; i < waren.getLength(); i++)
-            {
-                NodeList childs = waren.item(i).getChildNodes();
-                warenListe.add(new Ware(childs.item(0).getNodeValue(), childs.item(1).getNodeValue()));
+            Element root = doc.getDocumentElement();
+            NodeList wareElements = root.getElementsByTagName("ware");
+            
+            for (int i = 0; i < wareElements.getLength(); i++) {
+                Element wareElement = (Element) wareElements.item(i);
+                String bezeichnung = wareElement.getAttribute("bezeichnung");
+                String preis = wareElement.getAttribute("preis");
+                warenListe.add(new Ware(bezeichnung, preis));
             }
         } catch (DaoException e) {
-            System.out.println("There was an unexpected Exception in WareDaoXml#readAll().");
+            System.out.println("Error in WareDaoXml#readAll().");
         }
         return warenListe;
     }
 
+    // Update a "ware" element by its id 
     @Override
     public void update(IWare objectToUpdate) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("ware");
-            Element nodeID = root.getOwnerDocument().getElementById("");
-
-            Node bezeichnung = nodeID.getElementsByTagName("bezeichnung").item(0);
-            bezeichnung.setNodeValue(objectToUpdate.getBezeichnung());
-
-            Node preis = nodeID.getElementsByTagName("preis").item(0);
-            preis.setNodeValue(objectToUpdate.getPreis());
-
+            Element root = doc.getDocumentElement();
+            NodeList wareElements = root.getElementsByTagName("ware");
+            
+            for (int i = 0; i < wareElements.getLength(); i++) {
+                Element wareElement = (Element) wareElements.item(i);
+                String id = wareElement.getAttribute("id");
+                
+                if (id.equals(String.valueOf(objectToUpdate.getId()))) {
+                    // Update "bezeichnung" and "preis" attributes
+                    wareElement.setAttribute("bezeichnung", objectToUpdate.getBezeichnung());
+                    wareElement.setAttribute("preis", objectToUpdate.getPreis());
+                    break; // Updated the matching ware, exit the loop
+                }
+            }
+            
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in WareDaoXml#update(IWare objectToUpdate).");
+            System.out.println("Error in WareDaoXml#update(IWare objectToUpdate).");
         }
     }
 
+    // Delete a "ware" element by its id 
     @Override
     public void delete(Long id) {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
-            Element root = doc.getElementById("vertragspartner");
-            Element nodeID = root.getOwnerDocument().getElementById(id.toString());
-            root.removeChild(nodeID);
+            Element root = doc.getDocumentElement();
+            NodeList wareElements = root.getElementsByTagName("ware");
+            
+            for (int i = 0; i < wareElements.getLength(); i++) {
+                Element wareElement = (Element) wareElements.item(i);
+                String wareId = wareElement.getAttribute("id");
+                
+                if (wareId.equals(id.toString())) {
+                    root.removeChild(wareElement);
+                    break; // Removed the matching ware, exit the loop
+                }
+            }
+            
             ServiceXml.writeToXML(doc, new FileOutputStream(FILEPATH));
         } catch (IOException | DaoException ex) {
-            System.out.println("There was an unexpected Exception in WareDaoXml#delete(Long id).");
+            System.out.println("Error in WareDaoXml#delete(Long id).");
         }
+    }
+    
+
+    // Dont need that method but it is required by the interface
+    @Override
+    public IWare create() {
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 }
