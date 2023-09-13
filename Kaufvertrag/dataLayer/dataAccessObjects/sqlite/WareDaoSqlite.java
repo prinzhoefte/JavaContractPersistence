@@ -10,6 +10,7 @@ import java.util.List;
 import Kaufvertrag.businessObjects.IWare;
 import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
+import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
 /**
  * This class provides data access methods for the 'ware' table in an SQLite database.
@@ -17,7 +18,7 @@ import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
 public class WareDaoSqlite implements IDao<IWare, Long> {
 
     @Override
-    public void create(IWare objectToInsert) {
+    public void create(IWare objectToInsert) throws DaoException {
         try {
             // Establish a database connection.
             ConnectionManager connectionManager = new ConnectionManager();
@@ -36,12 +37,12 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
             connectionManager.close(null, statement, connection);
 
         } catch (SQLException e) {
-            System.out.println("Error in WareDaoSqlite#create(IWare objectToInsert).");
+            throw new DaoException("Error in WareDaoSqlite#create(IWare objectToInsert).");
         }
     }
 
     @Override
-    public IWare read(Long id) {
+    public IWare read(Long id) throws DaoException {
 
         Ware ware = null;
 
@@ -73,14 +74,14 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
             connectionManager.close(resultSet, statement, connection);
 
         } catch (SQLException e) {
-            System.out.println("Error in WareDaoSqlite#read().");
+            throw new DaoException("Error in WareDaoSqlite#read().");
         }
 
         return ware;
     }
 
     @Override
-    public List<IWare> readAll() {
+    public List<IWare> readAll() throws DaoException {
 
         List<IWare> wareList = new ArrayList<>();
 
@@ -110,14 +111,14 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
             connectionManager.close(resultSet, statement, connection);
 
         } catch (SQLException e) {
-            System.out.println("Error in WareDaoSqlite#readAll().");
+            throw new DaoException("Error in WareDaoSqlite#readAll().");
         }
 
         return wareList;
     }
 
     @Override
-    public void update(IWare objectToUpdate) {
+    public void update(IWare objectToUpdate) throws DaoException {
         try {
             // Establish a database connection.
             ConnectionManager connectionManager = new ConnectionManager();
@@ -137,12 +138,12 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
             connectionManager.close(null, statement, connection);
 
         } catch (SQLException e) {
-            System.out.println("Error in WareDaoSqlite#update(IWare objectToUpdate).");
+            throw new DaoException("Error in WareDaoSqlite#update(IWare objectToUpdate).");
         }
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws DaoException {
         try {
             // Establish a database connection.
             ConnectionManager connectionManager = new ConnectionManager();
@@ -160,13 +161,12 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
             connectionManager.close(null, statement, connection);
 
         } catch (SQLException e) {
-            System.out.println("Error in WareDaoSqlite#delete(Long id).");
+            throw new DaoException("Error in WareDaoSqlite#delete(Long id).");
         }
     }
 
-    // This method is not needed but is required by the interface.
     @Override
     public IWare create() {
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+        return new Ware(null, null);
     }
 }

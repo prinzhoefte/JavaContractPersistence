@@ -2,9 +2,9 @@ package Kaufvertrag.dataLayer.dataAccessObjects.sqlite;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * This class manages database connections for SQLite.
@@ -65,12 +65,11 @@ public class ConnectionManager {
      * Close the result set, statement, and connection.
      *
      * @param resultSet  The result set to close.
-     * @param preparedStatement  The statement to close.
+     * @param statement  The statement to close.
      * @param connection The connection to close.
      * @throws SQLException If an SQL error occurs during the close operation.
      */
-    public void close(ResultSet resultSet, PreparedStatement statement, Connection connection) throws SQLException {
-
+    public void close(ResultSet resultSet, Statement statement, Connection connection) throws SQLException {
         try {
             // Close the statement.
             statement.close();

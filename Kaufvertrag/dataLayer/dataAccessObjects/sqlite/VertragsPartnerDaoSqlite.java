@@ -5,7 +5,7 @@ import java.util.List;
 import Kaufvertrag.businessObjects.IVertragspartner;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
 
-public class VertragsPartnerDaoSqlite<IVertragspartner, String> implements IDao<IVertragspartner, String> {
+public class VertragsPartnerDaoSqlite implements IDao<IVertragspartner, String> {
 
     @Override
     public IVertragspartner create() {

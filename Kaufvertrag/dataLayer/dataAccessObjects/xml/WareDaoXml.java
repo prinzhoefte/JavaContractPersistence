@@ -15,7 +15,7 @@ public class WareDaoXml implements IDao<IWare, Long>
 
     // Create a new "ware" element and append it to the root
     @Override
-    public void create(IWare objectToInsert) {
+    public void create(IWare objectToInsert) throws DaoException {
         try {
             Document doc = ServiceXml.getDocument(FILEPATH);
             // Get the root element

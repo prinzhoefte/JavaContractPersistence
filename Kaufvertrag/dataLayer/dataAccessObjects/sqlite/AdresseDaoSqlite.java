@@ -114,7 +114,7 @@ public class AdresseDaoSqlite implements IDao<IAdresse, Long> {
       String query = "DELETE from adresse WHERE id = ?";
       PreparedStatement statement = connection.prepareStatement(query);
       statement.setLong(1, id);
-      ResultSet result = statement.executeQuery();
+      ResultSet resulSett = statement.executeQuery();
     } catch (Exception ex) {
       System.out.println("There was an unexpected Exception in AdresseDaoSqlite#delete(Long id).");
     }
