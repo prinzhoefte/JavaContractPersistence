@@ -1,6 +1,7 @@
 package Kaufvertrag.dataLayer.dataAccessObjects.xml;
 
 import Kaufvertrag.businessObjects.IWare;
+import Kaufvertrag.dataLayer.Formatter;
 import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
@@ -9,8 +10,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WareDaoXml implements IDao<IWare, Long>
-{
+public class WareDaoXml implements IDao<IWare, Long> {
+
     private static final String FILEPATH = "vertraege.xml";
 
     // Create a new "ware" element and append it to the root
@@ -27,7 +28,10 @@ public class WareDaoXml implements IDao<IWare, Long>
             // Create and set attributes for the "ware" element
             wareElement.setAttribute("id", String.valueOf(objectToInsert.getId()));
             wareElement.setAttribute("bezeichnung", objectToInsert.getBezeichnung());
+            wareElement.setAttribute("beschreibung", objectToInsert.getBeschreibung());
             wareElement.setAttribute("preis", objectToInsert.getPreis());
+            wareElement.setAttribute("besonderheiten", Formatter.ListToString(objectToInsert.getBesonderheiten()));
+            wareElement.setAttribute("maengel", Formatter.ListToString(objectToInsert.getMaengel()));
     
             // Append the "ware" element to the root
             root.appendChild(wareElement);
@@ -54,9 +58,19 @@ public class WareDaoXml implements IDao<IWare, Long>
                 String wareId = wareElement.getAttribute("id");
                 
                 if (wareId.equals(id.toString())) {
+
                     String bezeichnung = wareElement.getAttribute("bezeichnung");
+                    String beschreibung = wareElement.getAttribute("beschreibung");
                     String preis = wareElement.getAttribute("preis");
+                    String besonderheiten = wareElement.getAttribute("besonderheiten");
+                    String maengel = wareElement.getAttribute("maengel");
+
                     ware = new Ware(bezeichnung, preis);
+
+                    ware.setBeschreibung(beschreibung);
+                    ware.setBesonderheiten(besonderheiten);
+                    ware.setMaengel(maengel);
+
                     break; // Found the matching ware, exit the loop
                 }
             }
@@ -77,10 +91,21 @@ public class WareDaoXml implements IDao<IWare, Long>
             NodeList wareElements = root.getElementsByTagName("ware");
             
             for (int i = 0; i < wareElements.getLength(); i++) {
+
                 Element wareElement = (Element) wareElements.item(i);
                 String bezeichnung = wareElement.getAttribute("bezeichnung");
+                String beschreibung = wareElement.getAttribute("beschreibung");
                 String preis = wareElement.getAttribute("preis");
-                warenListe.add(new Ware(bezeichnung, preis));
+                String besonderheiten = wareElement.getAttribute("besonderheiten");
+                String maengel = wareElement.getAttribute("maengel");
+
+                Ware ware = new Ware(bezeichnung, preis);
+
+                ware.setBeschreibung(beschreibung);
+                ware.setBesonderheiten(besonderheiten);
+                ware.setMaengel(maengel);
+
+                warenListe.add(ware);
             }
         } catch (DaoException e) {
             System.out.println("Error in WareDaoXml#readAll().");
@@ -101,9 +126,14 @@ public class WareDaoXml implements IDao<IWare, Long>
                 String id = wareElement.getAttribute("id");
                 
                 if (id.equals(String.valueOf(objectToUpdate.getId()))) {
-                    // Update "bezeichnung" and "preis" attributes
+
+                    // Update attributes
                     wareElement.setAttribute("bezeichnung", objectToUpdate.getBezeichnung());
+                    wareElement.setAttribute("beschreibung", objectToUpdate.getBeschreibung());
                     wareElement.setAttribute("preis", objectToUpdate.getPreis());
+                    wareElement.setAttribute("besonderheiten", Formatter.ListToString(objectToUpdate.getBesonderheiten()));
+                    wareElement.setAttribute("maengel", Formatter.ListToString(objectToUpdate.getMaengel()));
+
                     break; // Updated the matching ware, exit the loop
                 }
             }
@@ -138,10 +168,8 @@ public class WareDaoXml implements IDao<IWare, Long>
         }
     }
     
-
-    // Dont need that method but it is required by the interface
     @Override
     public IWare create() {
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+        return new Ware(null, null);
     }
 }

@@ -1,8 +1,11 @@
 package Kaufvertrag.dataLayer.businessObjects;
 import Kaufvertrag.businessObjects.IWare;
+import Kaufvertrag.dataLayer.Formatter;
+
 import java.util.List;
 
 public class Ware implements IWare{
+
     private long id;
     private String bezeichnung;
     private String beschreibung;
@@ -66,5 +69,46 @@ public class Ware implements IWare{
                 ", besonderheiten=" + besonderheiten +
                 ", maengel=" + maengel +
                 '}';
+    }
+
+    /*
+     * 
+     * own created methodes to reduce repetitions in code
+     * 
+     */
+    public void setBesonderheiten(List<String> besonderheiten) {
+        
+        for(int i = 0; i < besonderheiten.size(); i++) {
+            String besonderheit = besonderheiten.get(i);
+            this.besonderheiten.add(besonderheit);
+        }
+    }
+
+    public void setBesonderheiten(String besonderheitenRaw) {
+
+        List<String> besonderheiten = Formatter.StringToList(besonderheitenRaw);
+        
+        for(int i = 0; i < besonderheiten.size(); i++) {
+            String besonderheit = besonderheiten.get(i);
+            this.besonderheiten.add(besonderheit);
+        }
+    }
+
+    public void setMaengel(List<String> maengel) {
+        
+        for(int i = 0; i < maengel.size(); i++) {
+            String mangel = maengel.get(i);
+            this.maengel.add(mangel);
+        }
+    }
+
+    public void setMaengel(String maengelRaw) {
+
+        List<String> maengel = Formatter.StringToList(maengelRaw);
+        
+        for(int i = 0; i < maengel.size(); i++) {
+            String mangel = maengel.get(i);
+            this.maengel.add(mangel);
+        }
     }
 }
