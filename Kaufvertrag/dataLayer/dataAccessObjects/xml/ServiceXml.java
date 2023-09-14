@@ -27,7 +27,7 @@ public class ServiceXml
             doc.appendChild(rootElement);
             return doc;
         } catch (SAXException | IOException | ParserConfigurationException ex) {
-            throw new DaoException("There was an unexpected Exception in getDocument.");
+            throw new DaoException("Error in getDocument.");
         }
     }
 
@@ -43,7 +43,7 @@ public class ServiceXml
 
             transformer.transform(source, result);
         } catch (TransformerException ex) {
-            throw new DaoException("There was an unexpected Exception in writeToXML.");
+            throw new DaoException("Error in writeToXML.");
         }
         return;
     }

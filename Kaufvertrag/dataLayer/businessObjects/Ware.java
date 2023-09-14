@@ -2,6 +2,7 @@ package Kaufvertrag.dataLayer.businessObjects;
 import Kaufvertrag.businessObjects.IWare;
 import Kaufvertrag.dataLayer.Formatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ware implements IWare{
@@ -10,13 +11,15 @@ public class Ware implements IWare{
     private String bezeichnung;
     private String beschreibung;
     private String preis;
-    List<String> besonderheiten;
-    List<String> maengel;
+    List<String> besonderheiten = new ArrayList<>();
+    List<String> maengel = new ArrayList<>();
 
     public Ware(String bezeichnung, String preis) {
         this.bezeichnung = bezeichnung;
         this.preis = preis;
         this.beschreibung = "";
+        this.besonderheiten.add("");
+        this.maengel.add("");
     }
 
     public void setId(long id) {

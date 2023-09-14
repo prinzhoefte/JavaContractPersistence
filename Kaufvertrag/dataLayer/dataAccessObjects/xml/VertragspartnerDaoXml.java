@@ -1,6 +1,7 @@
 package Kaufvertrag.dataLayer.dataAccessObjects.xml;
 
 import Kaufvertrag.businessObjects.IVertragspartner;
+import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.businessObjects.Vertragspartner;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
@@ -26,7 +27,11 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
             vertragspartnerElement.setAttribute("id", objectToInsert.getAusweisNr());
             vertragspartnerElement.setAttribute("vorname", objectToInsert.getVorname());
             vertragspartnerElement.setAttribute("nachname", objectToInsert.getNachname());
-    
+            vertragspartnerElement.setAttribute("strasse", objectToInsert.getAdresse().getStrasse());
+            vertragspartnerElement.setAttribute("hausnr", objectToInsert.getAdresse().getHausNr());
+            vertragspartnerElement.setAttribute("plz", objectToInsert.getAdresse().getPlz());
+            vertragspartnerElement.setAttribute("ort", objectToInsert.getAdresse().getOrt());
+
             // Append the "vertragspartner" element to the root
             root.appendChild(vertragspartnerElement);
     
@@ -54,8 +59,15 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
                 if (partnerId.equals(id)) {
                     String vorname = vertragspartnerElement.getAttribute("vorname");
                     String nachname = vertragspartnerElement.getAttribute("nachname");
+                    String strasse = vertragspartnerElement.getAttribute("strasse");
+                    String hausnr = vertragspartnerElement.getAttribute("hausnr");
+                    String plz = vertragspartnerElement.getAttribute("plz");
+                    String ort = vertragspartnerElement.getAttribute("ort");
+
+                    Adresse adresse = new Adresse(strasse, hausnr, plz, ort);
                     vertragspartner = new Vertragspartner(vorname, nachname);
                     vertragspartner.setAusweisNr(partnerId);
+                    vertragspartner.setAdresse(adresse);
                     break; // Found the matching vertragspartner, exit the loop
                 }
             }
@@ -79,7 +91,16 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
                 Element vertragspartnerElement = (Element) vertragspartnerElements.item(i);
                 String vorname = vertragspartnerElement.getAttribute("vorname");
                 String nachname = vertragspartnerElement.getAttribute("nachname");
-                vertragspartnerListe.add(new Vertragspartner(vorname, nachname));
+                String strasse = vertragspartnerElement.getAttribute("strasse");
+                String hausnr = vertragspartnerElement.getAttribute("hausnr");
+                String plz = vertragspartnerElement.getAttribute("plz");
+                String ort = vertragspartnerElement.getAttribute("ort");
+
+                Adresse adresse = new Adresse(strasse, hausnr, plz, ort);
+                Vertragspartner partner = new Vertragspartner(vorname, nachname);
+                partner.setAusweisNr(vertragspartnerElement.getAttribute("id"));
+                partner.setAdresse(adresse);
+                vertragspartnerListe.add(partner);
             }
         } catch (DaoException e) {
             System.out.println("Error in VertragspartnerDaoXml#readAll().");
@@ -104,6 +125,10 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
                     // Update "vorname" and "nachname" attributes
                     vertragspartnerElement.setAttribute("vorname", objectToUpdate.getVorname());
                     vertragspartnerElement.setAttribute("nachname", objectToUpdate.getNachname());
+                    vertragspartnerElement.setAttribute("strasse", objectToUpdate.getAdresse().getStrasse());
+                    vertragspartnerElement.setAttribute("hausnr", objectToUpdate.getAdresse().getHausNr());
+                    vertragspartnerElement.setAttribute("plz", objectToUpdate.getAdresse().getPlz());
+                    vertragspartnerElement.setAttribute("ort", objectToUpdate.getAdresse().getOrt());
                     break; // Updated the matching vertragspartner, exit the loop
                 }
             }

@@ -11,5 +11,3 @@ public interface IVertragspartner {
     public void setAdresse(IAdresse adresse);
 
 }
-
-

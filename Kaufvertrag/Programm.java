@@ -21,8 +21,8 @@ public class Programm {
             buyer.setAusweisNr("73642");
 
             // Created "Adresse" objects for seller and buyer
-            IAdresse sellerAddress = new Adresse("Musterstraße", "123", "12345", "Musterstadt");
-            IAdresse buyerAddress = new Adresse("Käuferweg", "456", "54321", "Käuferstadt");
+            IAdresse sellerAddress = new Adresse("Musterstrasse", "123", "12345", "Musterstadt");
+            IAdresse buyerAddress = new Adresse("Kaeuferweg", "456", "54321", "Kaeuferstadt");
 
             // Set addresses for seller and buyer
             seller.setAdresse(sellerAddress);
@@ -49,7 +49,7 @@ public class Programm {
             System.out.println("Kaufvertragsdetails: ");
             System.out.println(contract.toString());
 
-            System.out.println("\nVerkäuferdetails: ");
+            System.out.println("\nVerkaeuferdetails: ");
             IVertragspartner retrievedSeller = vertragspartnerStringIDao.read(seller.getAusweisNr());
             System.out.println(retrievedSeller.toString());
 
