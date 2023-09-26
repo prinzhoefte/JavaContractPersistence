@@ -19,6 +19,11 @@ import Kaufvertrag.presentationLayer.exceptions.DaoException;
 public class WareDaoSqlite implements IDao<IWare, Long> {
 
     @Override
+    public IWare create() {
+        return new Ware(null, null);
+    }
+
+    @Override
     public void create(IWare objectToInsert) throws DaoException {
         try {
             // Establish a database connection.
@@ -26,14 +31,15 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
             Connection connection = connectionManager.getNewConnection();
 
             // Define the SQL query to insert a new 'ware' record.
-            String sql = "INSERT INTO ware (bezeichnung, beschreibung, preis, besonderheiten, maengel) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO ware (id, bezeichnung, beschreibung, preis, besonderheiten, maengel) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, objectToInsert.getBezeichnung());
-            statement.setString(2, objectToInsert.getBeschreibung());
-            statement.setString(3, objectToInsert.getPreis());
-            statement.setString(4, Formatter.ListToString(objectToInsert.getBesonderheiten()));
-            statement.setString(4, Formatter.ListToString(objectToInsert.getMaengel()));
+            statement.setLong(1, objectToInsert.getId());
+            statement.setString(2, objectToInsert.getBezeichnung());
+            statement.setString(3, objectToInsert.getBeschreibung());
+            statement.setString(4, objectToInsert.getPreis());
+            statement.setString(5, Formatter.ListToString(objectToInsert.getBesonderheiten()));
+            statement.setString(6, Formatter.ListToString(objectToInsert.getMaengel()));
 
             // Execute the insert query.
             statement.executeUpdate();
@@ -188,8 +194,4 @@ public class WareDaoSqlite implements IDao<IWare, Long> {
         }
     }
 
-    @Override
-    public IWare create() {
-        return new Ware(null, null);
-    }
 }
