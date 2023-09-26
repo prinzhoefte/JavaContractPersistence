@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Kaufvertrag.businessObjects.IVertragspartner;
-import Kaufvertrag.businessObjects.IWare;
-import Kaufvertrag.dataLayer.Formatter;
 import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.businessObjects.Vertragspartner;
-import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.IDao;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
