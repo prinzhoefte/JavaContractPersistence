@@ -129,7 +129,7 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
                     vertragspartnerElement.setAttribute("hausnr", objectToUpdate.getAdresse().getHausNr());
                     vertragspartnerElement.setAttribute("plz", objectToUpdate.getAdresse().getPlz());
                     vertragspartnerElement.setAttribute("ort", objectToUpdate.getAdresse().getOrt());
-                    break; // Updated the matching vertragspartner, exit the loop
+                    break; // Updated the matching vertragspartner, exit the loop // Darf nicht Null sein, dass was ich verändern will // ja hat er
                 }
             }
             

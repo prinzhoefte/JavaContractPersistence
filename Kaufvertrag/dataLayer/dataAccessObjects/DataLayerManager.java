@@ -33,7 +33,7 @@ public class DataLayerManager {
      * @return An instance of IDataLayer for the chosen persistence type.
      * @throws DaoException If an invalid or unsupported persistence type is selected.
      */
-    public IDataLayer getDataLayer() throws DaoException {
+    public IDataLayer getDataLayer(boolean usingSQL) throws DaoException {
         switch (persistenceType) {
             case "sqlite":
                 return new DataLayerSqlite();
