@@ -1,4 +1,5 @@
 package Kaufvertrag;
+
 import Kaufvertrag.businessObjects.*;
 import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.businessObjects.Vertragspartner;
@@ -6,287 +7,270 @@ import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.*;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
-import javax.swing.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
+import java.util.Scanner;
 
 public class Programm {
+    public static Scanner scanner = new Scanner(System.in);
 
-    static Scanner scanner = new Scanner(System.in);
-    static ArrayList<String> wareAtrtibute = new ArrayList<>();
-    static ArrayList<String> vertragspartnerAtribute = new ArrayList<>();
-    static String invalidText = "Die Eingabe war nicht richtig. Bitte geben Sie gültige Eingaben ein. ";
-    static boolean usingSQL = false; // true = SQL, false = XML
-    public static void main(String[] args) throws RuntimeException {
-        try {
-            // Created DataLayerManager and DataLayer
-            AttributeHinzufuegen();
-            DataLayerManager dataLayerManager = DataLayerManager.getInstance();
-            IDataLayer dataLayer = dataLayerManager.getDataLayer(usingSQL);
-            String userInput;
-            while(true) {
-                System.out.println("Was möchten Sie tun?");
-                System.out.println("[1] Erstellen");
-                System.out.println("[2] Loeschen");
-                System.out.println("[3] Veraendern");
-                System.out.println("[4] Ausgeben");
-                System.out.println("[5] Beenden");
-                userInput = JOptionPane.showInputDialog("Eingabe");
-                if(userInput.equals("1") || userInput.equals("2") || userInput.equals("3")  || userInput.equals("4") || userInput.equals("5")) {
-                    handleMode(userInput, dataLayer);
-                }else{
-                    System.out.println("Ungültig. Bitte waehlen Sie eine der verfügbaren Optionen.");
-                }
-            }
+    public static void main(String args[]) throws DaoException, IOException {
+        DataLayerManager dataLayerManager = DataLayerManager.getInstance();
+        IDataLayer dataLayer = dataLayerManager.getDataLayer();
 
-        } catch (DaoException e) {
-            // Thow RuntimeException if something went wrong
-            throw new RuntimeException(e);
-        }
-    }
+        while (true) {
+            System.out.println("Choose action:");
+            System.out.println("1: Create");
+            System.out.println("2: Read");
+            System.out.println("3: Update");
+            System.out.println("4: Delete");
+            System.out.println("5: Exit");
 
-    private static void handleMode(String userInput, IDataLayer dataLayer) throws DaoException {
-        userInput = userInput.toLowerCase();
-        try{
-            switch(userInput){
-                case "1":
-                    erstellen(dataLayer);
+            int action = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (action) {
+                case 1:
+                    // Handle Create action
+                    create(dataLayer);
                     break;
-                case "2":
-                    loeschen(dataLayer);
+                case 2:
+                    // Handle Read action
+                    read(dataLayer);
                     break;
-                case "3":
-                    updaten(dataLayer);
-                    break; 
-                case "4": 
-                    ausgeben(dataLayer);
+                case 3:
+                    // Handle Update action
+                    update(dataLayer);
                     break;
-                case "5":
+                case 4:
+                    // Handle Delete action
+                    delete(dataLayer);
+                    break;
+                case 5:
+                    // Handle Exit action
+                    System.out.println("Programm terminated...");
                     System.exit(0);
-                default: throw new DaoException(invalidText + "(" + userInput  + ")");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please choose a valid option.");
+                    break;
             }
-        }catch (DaoException e){
-            System.out.println(e.getMessage());
         }
     }
 
-    private static void ausgeben(IDataLayer dataLayer) throws DaoException {
-        System.out.println("Was möchten Sie ausgeben?");
-        System.out.println("[1] Ware");
-        System.out.println("[2] Vertragspartner");
+    private static void create(IDataLayer dataLayer) throws DaoException {
+        //Clear screen
+        System.out.println("\033[H\033[2J");
+        System.out.println("Choose object to create:");
+        System.out.println("1: Vertragspartner");
+        System.out.println("2: Ware");
 
-        String modus = JOptionPane.showInputDialog("Eingabe");
+        int action = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
 
-        while(!modus.equals("1") && !modus.equals("2")){
-            System.out.println(invalidText);
-            modus = JOptionPane.showInputDialog("Eingabe");
-        }
-
-        if(modus.equals("1")) {
-            IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
-            System.out.println("Soll ein einzelner Eintrag ausgegeben werden? [ja/nein]");
-            String modus2 = JOptionPane.showInputDialog("Eingabe [ja/nein]");
-            if (modus2.equals("ja")) {
-                System.out.println("Bitte geben Sie die ID an: ");
-                String id = JOptionPane.showInputDialog("Eingabe ID");
-                System.out.println(wareDao.read(Long.valueOf(id)));
-            } else if (modus2.equals("nein")) {
-                eintraegeAuslesen("1", dataLayer);
-            } else {
-                System.out.println(invalidText);
-            }
-        }
-            if(modus.equals("2")){
+        switch (action) {
+            case 1:
+                // Handle Create Vertragspartner action
+                System.out.println("Enter Ausweisnummer:");
+                String ausweisnummer = scanner.nextLine();
+                System.out.println("Enter Vorname:");
+                String vorname = scanner.nextLine();
+                System.out.println("Enter Nachname:");
+                String nachname = scanner.nextLine();
+                System.out.println("Enter Strasse:");
+                String strasse = scanner.nextLine();
+                System.out.println("Enter Hausnummer:");
+                String hausnummer = scanner.nextLine();
+                System.out.println("Enter Postleitzahl:");
+                String postleitzahl = scanner.nextLine();
+                System.out.println("Enter Ort:");
+                String ort = scanner.nextLine();
+                IAdresse adresse = new Adresse(strasse, hausnummer, postleitzahl, ort);
+                IVertragspartner vertragspartner = new Vertragspartner(vorname, nachname);
+                vertragspartner.setAusweisNr(ausweisnummer);       
+                vertragspartner.setAdresse(adresse);
                 IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
-                System.out.println("Soll ein einzelner Eintrag ausgegeben werden? [ja/nein]");
-                String modus2 = JOptionPane.showInputDialog("Eingabe [ja/nein]");
-                if(modus2.equals("ja")){
-                    System.out.println("Bitte geben Sie die ID an: ");
-                    String id = JOptionPane.showInputDialog("Eingabe ID");
-                    System.out.println(vertragspartnerDao.read(id));
-                }else if(modus2.equals("nein")){
-                    eintraegeAuslesen("2", dataLayer);
-                }else{
-                    System.out.println(invalidText);
+                vertragspartnerDao.create(vertragspartner);
+                break;
+            case 2:
+                // Handle Create Ware action
+                System.out.println("Enter ArtikelNr:");
+                long id = scanner.nextLong();
+                System.out.println("Enter Bezeichnung:");
+                String bezeichnung = scanner.nextLine();
+                System.out.println("Enter Beschreibung:");
+                String beschreibung = scanner.nextLine();
+                System.out.println("Enter Preis:");
+                String preis = scanner.nextLine();
+                System.out.println("Enter Besonderheiten:");
+                List<String> besonderheiten = enterList();
+                System.out.println("Enter Mängel:");
+                List<String> maengel = enterList();
+                Ware ware = new Ware(bezeichnung, preis);
+                ware.setId(id);
+                ware.setBeschreibung(beschreibung);
+                ware.setBesonderheiten(besonderheiten);
+                ware.setMaengel(maengel);
+                IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
+                wareDao.create(ware);
+                break;
+            default:
+                System.out.println("Invalid choice. Please choose a valid option.");
+                break;
+        }
+    }
+
+    private static void read(IDataLayer dataLayer) throws DaoException {
+        //Clear screen
+        System.out.println("\033[H\033[2J");
+        System.out.println("Choose object to read:");
+        System.out.println("1: Vertragspartner");
+        System.out.println("2: Ware");
+
+        int action = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        switch (action) {
+            case 1:
+                // Handle Read Vertragspartner action
+                System.out.println("Enter Ausweisnummer:");
+                String ausweisnummer = scanner.nextLine();
+                IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
+                IVertragspartner vertragspartner = vertragspartnerDao.read(ausweisnummer);
+                if (vertragspartner == null) {
+                    System.out.println("\033[H\033[2J");
+                    System.out.println("Vertragspartner with Ausweisnummer " + ausweisnummer + " not found.");
+                } else {
+                    System.out.println("\033[H\033[2J");
+                    System.out.println(vertragspartner);
                 }
-            }
-    }
-
-    private static void updaten(IDataLayer dataLayer) throws DaoException {
-        System.out.println("Was moechten Sie veraendern?");
-        System.out.println("[1] Ware");
-        System.out.println("[2] Vertragspartner");
-
-        String modus = null;
-        ArrayList<String> s = new ArrayList<>();
-        boolean go = true;
-
-        //Auswahl in Schleife --> was soll geaendert werden
-        while(go){
-            modus = JOptionPane.showInputDialog("Eingabe");
-            switch (modus){
-                case "1":
-                    s = wareAtrtibute;
-                    eintraegeAuslesen("1", dataLayer);
-                    go = false;
-                    break;
-                case "2":
-                    s = vertragspartnerAtribute;
-                    eintraegeAuslesen("2", dataLayer);
-                    go = false;
-                    break;
-                default:
-                    System.out.println(invalidText);
-            }
-        }
-
-        System.out.println("Bei welchem Eintrag soll etwas geändert werden? Geben Sie die ID ein");
-        String id = JOptionPane.showInputDialog("ID Eingabe");
-        String modus2;
-        String newVal;
-
-        while(true){
-            System.out.println("Was soll veraendert werden?");
-            for(int i = 0; i < s.size(); i++) {
-                System.out.println("[" + (i + 1) + "] " + s.get(i));
-            }
-            System.out.println("[" + (s.size() + 1) + " ] Exit");
-                modus2 = JOptionPane.showInputDialog("Eingabe");
-                //Exit
-                if(modus2.equals(String.valueOf(s.size() + 1))){
-                    break;
-                }else if(Integer.parseInt(modus2) < 1 || Integer.parseInt(modus2) > s.size()){
-                    throw new DaoException(invalidText + "(" + modus2 + ")");
-                }else{
-                    System.out.println("Bitte geben Sie den neuen Wert für " + s.get(Integer.parseInt(modus2) - 1) + "an");
-                    newVal = JOptionPane.showInputDialog("Eingabe");
+                break;
+            case 2:
+                // Handle Read Ware action
+                System.out.println("Enter ArtikelNr:");
+                long id = scanner.nextLong();
+                IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
+                IWare ware = wareDao.read(id);
+                if (ware == null) {
+                    System.out.println("\033[H\033[2J");
+                    System.out.println("Ware with ArtikelNr " + id + " not found.");
+                } else {
+                    System.out.println("\033[H\033[2J");
+                    System.out.println(ware);
                 }
-                if(modus.equals("1")){
-                    IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
+                break;
+            default:
+                System.out.println("Invalid choice. Please choose a valid option.");
+                break;
+        }
+    }
 
-                    wareDao.update(wareDao.read(Long.valueOf(id)));
-                }else if(modus.equals("2")){
-                    IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
+    private static void update(IDataLayer dataLayer) throws DaoException {
+        //Clear screen
+        System.out.println("\033[H\033[2J");
+        System.out.println("Choose object to update:");
+        System.out.println("1: Vertragspartner");
+        System.out.println("2: Ware");
 
-                    vertragspartnerDao.update(vertragspartnerDao.read(id));
-                }else{
-                    System.out.println("Ungültig");
+        int action = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        switch (action) {
+            case 1:
+                // Handle Update Vertragspartner action
+                System.out.println("Enter Ausweisnummer of Vertragspartner to update:");
+                String ausweisnummer = scanner.nextLine();
+                IVertragspartner vertragspartner = dataLayer.getDaoVertragspartner().read(ausweisnummer);
+                System.out.println("Enter Vorname:");
+                String vorname = scanner.nextLine();
+                System.out.println("Enter Nachname:");
+                String nachname = scanner.nextLine();
+                System.out.println("Enter Strasse:");
+                String strasse = scanner.nextLine();
+                System.out.println("Enter Hausnummer:");
+                String hausnummer = scanner.nextLine();
+                System.out.println("Enter Postleitzahl:");
+                String postleitzahl = scanner.nextLine();
+                System.out.println("Enter Ort:");
+                String ort = scanner.nextLine();
+                IAdresse adresse = new Adresse(strasse, hausnummer, postleitzahl, ort);
+                vertragspartner.setVorname(vorname);
+                vertragspartner.setNachname(nachname);
+                vertragspartner.setAdresse(adresse);
+                dataLayer.getDaoVertragspartner().update(vertragspartner);
+                break;
+            case 2:
+                // Handle Update Ware action
+                System.out.println("Enter ArtikelNr of Ware to update:");
+                long id = scanner.nextLong();
+                Ware ware = (Ware) dataLayer.getDaoWare().read(id);
+                if (ware == null) {
+                    System.out.println("\033[H\033[2J");
+                    System.out.println("Ware with ArtikelNr " + id + " does not exist.");
+                    break;
                 }
-
-
+                System.out.println("Enter Bezeichnung:");
+                String bezeichnung = scanner.nextLine();
+                System.out.println("Enter Beschreibung:");
+                String beschreibung = scanner.nextLine();
+                System.out.println("Enter Preis:");
+                String preis = scanner.nextLine();
+                System.out.println("Enter Besonderheiten:");
+                List<String> besonderheiten = enterList();
+                System.out.println("Enter Mängel:");
+                List<String> maengel = enterList();
+                ware.setBezeichnung(bezeichnung);
+                ware.setBeschreibung(beschreibung);
+                ware.setPreis(preis);
+                ware.setBesonderheiten(besonderheiten);
+                ware.setMaengel(maengel);
+                dataLayer.getDaoWare().update(ware);
+                break;
+            default:
+                System.out.println("Invalid choice. Please choose a valid option.");
+                break;
         }
     }
 
-    private static void loeschen(IDataLayer dataLayer) throws DaoException {
-        System.out.println("Was moechten Sie loeschen?");
-        System.out.println("[1] Ware");
-        System.out.println("[2] Vertragspartner");
+    private static void delete(IDataLayer dataLayer) throws DaoException {
+        //Clear screen
+        System.out.println("\033[H\033[2J");
+        System.out.println("Choose object to delete:");
+        System.out.println("1: Vertragspartner");
+        System.out.println("2: Ware");
 
-        String modus = "";
-        boolean go = true;
+        int action = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
 
-        // Auswahl in einer Schleife --> was soll gelöscht werden
-        while(go){
-            modus = JOptionPane.showInputDialog("Eingabe");
-            switch (modus){
-                case "1":
-                    eintraegeAuslesen("1", dataLayer);
-                    go = false; 
-                    break;
-                case "2":
-                    eintraegeAuslesen("2", dataLayer);
-                    go = false;
-                    break;
-                default:
-                    System.out.println(invalidText);
-            }
-        }
-        System.out.println("Bitte geben Sie die ID des Eintrags an, den Sie loeschen wollen: ");
-        String id = JOptionPane.showInputDialog("Eingabe");
-        
-        if(modus.equals("1")){
-            IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
-            wareDao.delete(Long.valueOf(id));
-        }else if(modus.equals("2")){
-            IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
-            vertragspartnerDao.delete(id);
+        switch (action) {
+            case 1:
+                // Handle Delete Vertragspartner action
+                System.out.println("Enter Ausweisnummer of Vertragspartner to delete:");
+                String ausweisnummer = scanner.nextLine();
+                dataLayer.getDaoVertragspartner().delete(ausweisnummer);
+                break;
+            case 2:
+                // Handle Delete Ware action
+                System.out.println("Enter ArtikelNr of Ware to delete:");
+                long id = scanner.nextLong();
+                dataLayer.getDaoWare().delete(id);
+                break;
+            default:
+                System.out.println("Invalid choice. Please choose a valid option.");
+                break;
         }
     }
 
-    private static void eintraegeAuslesen(String s, IDataLayer dataLayer) throws DaoException {
-        if(s.equals("1")){
-            IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
-            List<IWare> alleEintraege = wareDao.readAll();
-            for(IWare ware : alleEintraege) {
-                System.out.println(ware);
+    private static List<String> enterList() {
+        List<String> list = new java.util.ArrayList<String>();
+        while (true) {
+            System.out.println("Enter next item or press enter to finish:");
+            String item = scanner.nextLine();
+            if (item.isEmpty()) {
+                break;
             }
-        }else if(s.equals("2")){
-            IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
-            List<IVertragspartner> alleEintraege = vertragspartnerDao.readAll(); 
-            for(IVertragspartner vertragspartner : alleEintraege){
-                System.out.println(vertragspartner);
-            }
-        }else{
-            System.out.println("Ungueltig");
+            list.add(item);
         }
-    }
-
-    private static void erstellen(IDataLayer dataLayer) throws DaoException {
-        System.out.println("Was moechten Sie erstellen?");
-        System.out.println("[1] Ware");
-        System.out.println("[2] Vertragspartner");
-
-        String modus = "";
-        ArrayList<String> s  = new ArrayList<>();
-        //Auswal in einer Schleife --> was soll erstellt werden
-        boolean go = true;
-        while(go){
-            modus = JOptionPane.showInputDialog("Eingabe");
-            if(modus.equals("1")){
-                s = wareAtrtibute;
-                go = false;
-            }else if(modus.equals("2")){
-                s = vertragspartnerAtribute;
-                go = false;
-            }else{
-                System.out.println(invalidText);
-            }
-        }
-
-        ArrayList<String> eingabe = new ArrayList<>();
-        for (String s2 : s){
-            System.out.println("Gebe den Wert für '" + s2 + "' ein:");
-            eingabe.add(JOptionPane.showInputDialog("Eingabe: " + s2));
-        }
-        if(modus.equals("1")){
-            IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
-            Ware ware = new Ware(eingabe.get(1),eingabe.get(3));
-            ware.setBeschreibung(eingabe.get(2));
-            ware.setBesonderheiten(eingabe.get(4));
-            ware.setMaengel(eingabe.get(5));
-            wareDao.create(ware);
-        }else if(modus.equals("2")){
-            IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
-            Vertragspartner vertragspartner = new Vertragspartner(eingabe.get(1), eingabe.get(2));
-            vertragspartner.setAusweisNr(eingabe.get(0));
-            vertragspartner.setAdresse(new Adresse(eingabe.get(3), eingabe.get(4), eingabe.get(5), eingabe.get(6)));
-            vertragspartnerDao.create(vertragspartner);
-        }
-    }
-
-    private static void AttributeHinzufuegen() {
-        wareAtrtibute.add("ID");
-        wareAtrtibute.add("Bezeichnung");
-        wareAtrtibute.add("Beschreibung");
-        wareAtrtibute.add("Preis");
-        wareAtrtibute.add("Besonderheiten");
-        wareAtrtibute.add("Maengel");
-
-        vertragspartnerAtribute.add("AusweisNr");
-        vertragspartnerAtribute.add("Vornname");
-        vertragspartnerAtribute.add("Nachname");
-        vertragspartnerAtribute.add("Strasse");
-        vertragspartnerAtribute.add("Hausnummer");
-        vertragspartnerAtribute.add("PLZ");
-        vertragspartnerAtribute.add("Ort");
+        return list;
     }
 }

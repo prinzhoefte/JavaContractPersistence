@@ -33,7 +33,7 @@ public class DataLayerManager {
      * @return An instance of IDataLayer for the chosen persistence type.
      * @throws DaoException If an invalid or unsupported persistence type is selected.
      */
-    public IDataLayer getDataLayer(boolean usingSQL) throws DaoException {
+    public IDataLayer getDataLayer() throws DaoException {
         switch (persistenceType) {
             case "sqlite":
                 return new DataLayerSqlite();
@@ -59,8 +59,6 @@ public class DataLayerManager {
             System.out.println("Choose Persistence Type: XML or SQLite");
             persistenceType = scanner.nextLine();
         } while (!persistenceType.equalsIgnoreCase("xml") && !persistenceType.equalsIgnoreCase("sqlite"));
-
-        scanner.close();
 
         return this.persistenceType = persistenceType;
     }
