@@ -235,6 +235,7 @@ public class Programm {
         long id = scanner.nextLong();
         System.out.println("Enter Bezeichnung:");
         String bezeichnung = scanner.nextLine();
+        scanner.nextLine(); // Consume the newline character (Don't know why this is necessary)
         System.out.println("Enter Beschreibung:");
         String beschreibung = scanner.nextLine();
         System.out.println("Enter Preis:");
