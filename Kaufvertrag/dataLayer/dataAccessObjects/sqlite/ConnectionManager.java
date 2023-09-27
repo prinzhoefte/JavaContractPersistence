@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class ConnectionManager {
 
     private static final String CLASSNAME = "org.sqlite.JDBC";
-    private static final String CONNECTIONSTRING = "jdbc:sqlite:%FILE%"; // includes file path
+    private static final String CONNECTIONSTRING = "jdbc:sqlite:database"; // includes file path
 
     private Connection existingConnection;
     private boolean classLoaded = false;
