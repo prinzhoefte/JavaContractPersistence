@@ -22,6 +22,12 @@ public class Ware implements IWare{
         this.maengel.add("");
     }
 
+    public Ware() {
+        this.beschreibung = "";
+        this.besonderheiten.add("");
+        this.maengel.add("");
+    }
+
     public void setId(long id) {
         this.id = id; 
     }

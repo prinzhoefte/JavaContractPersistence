@@ -71,48 +71,19 @@ public class Programm {
         switch (action) {
             case 1:
                 // Handle Create Vertragspartner action
-                System.out.println("Enter Ausweisnummer:");
-                String ausweisnummer = scanner.nextLine();
-                System.out.println("Enter Vorname:");
-                String vorname = scanner.nextLine();
-                System.out.println("Enter Nachname:");
-                String nachname = scanner.nextLine();
-                System.out.println("Enter Strasse:");
-                String strasse = scanner.nextLine();
-                System.out.println("Enter Hausnummer:");
-                String hausnummer = scanner.nextLine();
-                System.out.println("Enter Postleitzahl:");
-                String postleitzahl = scanner.nextLine();
-                System.out.println("Enter Ort:");
-                String ort = scanner.nextLine();
-                IAdresse adresse = new Adresse(strasse, hausnummer, postleitzahl, ort);
-                IVertragspartner vertragspartner = new Vertragspartner(vorname, nachname);
-                vertragspartner.setAusweisNr(ausweisnummer);       
-                vertragspartner.setAdresse(adresse);
+                IVertragspartner vertragspartner = new Vertragspartner();
+                vertragspartner = getVertragspartner(vertragspartner);
                 IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
                 vertragspartnerDao.create(vertragspartner);
+                System.out.println("\033[H\033[2J");
                 break;
             case 2:
                 // Handle Create Ware action
-                System.out.println("Enter ArtikelNr:");
-                long id = scanner.nextLong();
-                System.out.println("Enter Bezeichnung:");
-                String bezeichnung = scanner.nextLine();
-                System.out.println("Enter Beschreibung:");
-                String beschreibung = scanner.nextLine();
-                System.out.println("Enter Preis:");
-                String preis = scanner.nextLine();
-                System.out.println("Enter Besonderheiten:");
-                List<String> besonderheiten = enterList();
-                System.out.println("Enter Mängel:");
-                List<String> maengel = enterList();
-                Ware ware = new Ware(bezeichnung, preis);
-                ware.setId(id);
-                ware.setBeschreibung(beschreibung);
-                ware.setBesonderheiten(besonderheiten);
-                ware.setMaengel(maengel);
+                Ware ware = new Ware();
+                ware = getWare(ware);
                 IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
                 wareDao.create(ware);
+                System.out.println("\033[H\033[2J");
                 break;
             default:
                 System.out.println("Invalid choice. Please choose a valid option.");
@@ -181,22 +152,12 @@ public class Programm {
                 System.out.println("Enter Ausweisnummer of Vertragspartner to update:");
                 String ausweisnummer = scanner.nextLine();
                 IVertragspartner vertragspartner = dataLayer.getDaoVertragspartner().read(ausweisnummer);
-                System.out.println("Enter Vorname:");
-                String vorname = scanner.nextLine();
-                System.out.println("Enter Nachname:");
-                String nachname = scanner.nextLine();
-                System.out.println("Enter Strasse:");
-                String strasse = scanner.nextLine();
-                System.out.println("Enter Hausnummer:");
-                String hausnummer = scanner.nextLine();
-                System.out.println("Enter Postleitzahl:");
-                String postleitzahl = scanner.nextLine();
-                System.out.println("Enter Ort:");
-                String ort = scanner.nextLine();
-                IAdresse adresse = new Adresse(strasse, hausnummer, postleitzahl, ort);
-                vertragspartner.setVorname(vorname);
-                vertragspartner.setNachname(nachname);
-                vertragspartner.setAdresse(adresse);
+                if (vertragspartner == null) {
+                    System.out.println("\033[H\033[2J");
+                    System.out.println("Vertragspartner with Ausweisnummer " + ausweisnummer + " does not exist.");
+                    break;
+                }
+                vertragspartner = getVertragspartner(vertragspartner);
                 dataLayer.getDaoVertragspartner().update(vertragspartner);
                 break;
             case 2:
@@ -209,21 +170,7 @@ public class Programm {
                     System.out.println("Ware with ArtikelNr " + id + " does not exist.");
                     break;
                 }
-                System.out.println("Enter Bezeichnung:");
-                String bezeichnung = scanner.nextLine();
-                System.out.println("Enter Beschreibung:");
-                String beschreibung = scanner.nextLine();
-                System.out.println("Enter Preis:");
-                String preis = scanner.nextLine();
-                System.out.println("Enter Besonderheiten:");
-                List<String> besonderheiten = enterList();
-                System.out.println("Enter Mängel:");
-                List<String> maengel = enterList();
-                ware.setBezeichnung(bezeichnung);
-                ware.setBeschreibung(beschreibung);
-                ware.setPreis(preis);
-                ware.setBesonderheiten(besonderheiten);
-                ware.setMaengel(maengel);
+                ware = getWare(ware);
                 dataLayer.getDaoWare().update(ware);
                 break;
             default:
@@ -259,6 +206,51 @@ public class Programm {
                 System.out.println("Invalid choice. Please choose a valid option.");
                 break;
         }
+    }
+
+    private static IVertragspartner getVertragspartner(IVertragspartner vertragspartner) {
+        System.out.println("Enter Ausweisnummer:");
+        String ausweisnummer = scanner.nextLine();
+        System.out.println("Enter Vorname:");
+        String vorname = scanner.nextLine();
+        System.out.println("Enter Nachname:");
+        String nachname = scanner.nextLine();
+        System.out.println("Enter Strasse:");
+        String strasse = scanner.nextLine();
+        System.out.println("Enter Hausnummer:");
+        String hausnummer = scanner.nextLine();
+        System.out.println("Enter Postleitzahl:");
+        String postleitzahl = scanner.nextLine();
+        System.out.println("Enter Ort:");
+        String ort = scanner.nextLine();
+        IAdresse adresse = new Adresse(strasse, hausnummer, postleitzahl, ort);
+        vertragspartner.setAusweisNr(ausweisnummer);
+        vertragspartner.setVorname(vorname);
+        vertragspartner.setNachname(nachname);
+        vertragspartner.setAdresse(adresse);
+        return vertragspartner;
+    }
+
+    private static Ware getWare(Ware ware) {
+        System.out.println("Enter ArtikelNr:");
+        long id = scanner.nextLong();
+        System.out.println("Enter Bezeichnung:");
+        String bezeichnung = scanner.nextLine();
+        System.out.println("Enter Beschreibung:");
+        String beschreibung = scanner.nextLine();
+        System.out.println("Enter Preis:");
+        String preis = scanner.nextLine();
+        System.out.println("Enter Besonderheiten:");
+        List<String> besonderheiten = enterList();
+        System.out.println("Enter Mängel:");
+        List<String> maengel = enterList();
+        ware.setId(id);
+        ware.setPreis(preis);
+        ware.setBezeichnung(bezeichnung);
+        ware.setBeschreibung(beschreibung);
+        ware.setBesonderheiten(besonderheiten);
+        ware.setMaengel(maengel);
+        return ware;
     }
 
     private static List<String> enterList() {

@@ -20,6 +20,16 @@ public class VertragspartnerDaoXml implements IDao<IVertragspartner, String>
             Document doc = ServiceXml.getDocument(FILEPATH);
             Element root = doc.getDocumentElement(); // Get the root element
 
+            // Check if vertragspartner already exists
+            NodeList vertragspartnerList = root.getElementsByTagName("vertragspartner");
+            for (int i = 0; i < vertragspartnerList.getLength(); i++) {
+                Element vertragspartnerElement = (Element) vertragspartnerList.item(i);
+                String partnerId = vertragspartnerElement.getAttribute("id");
+                if (partnerId.equals(objectToInsert.getAusweisNr())) {
+                    throw new DaoException("Vertragspartner already exists");
+                }
+            }
+
             // Create a new "vertragspartner" element
             Element vertragspartnerElement = doc.createElement("vertragspartner");
             

@@ -22,6 +22,16 @@ public class WareDaoXml implements IDao<IWare, Long> {
             // Get the root element
             Element root = doc.getDocumentElement();
 
+            // Check if ware already exists
+            NodeList wareList = root.getElementsByTagName("ware");
+            for (int i = 0; i < wareList.getLength(); i++) {
+                Element wareElement = (Element) wareList.item(i);
+                String wareId = wareElement.getAttribute("id");
+                if (wareId.equals(String.valueOf(objectToInsert.getId()))) {
+                    throw new DaoException("Ware already exists");
+                }
+            }
+
             // Create a new "ware" element
             Element wareElement = doc.createElement("ware");
             

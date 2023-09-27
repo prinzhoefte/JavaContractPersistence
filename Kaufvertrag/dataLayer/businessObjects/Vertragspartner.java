@@ -13,6 +13,10 @@ public class Vertragspartner implements IVertragspartner{
         this.nachname = nachname;
     }
 
+    public Vertragspartner() {
+        
+    }
+
     public String getVorname() {
         return vorname;
     }
