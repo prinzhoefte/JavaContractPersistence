@@ -7,14 +7,13 @@ import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.*;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Programm {
     public static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String args[]) throws DaoException, IOException {
+    public static void main(String args[]) throws DaoException {
         DataLayerManager dataLayerManager = DataLayerManager.getInstance();
         IDataLayer dataLayer = dataLayerManager.getDataLayer();
 
