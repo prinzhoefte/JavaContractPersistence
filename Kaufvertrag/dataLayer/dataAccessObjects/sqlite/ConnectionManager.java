@@ -70,32 +70,39 @@ public class ConnectionManager {
      * @throws SQLException If an SQL error occurs during the close operation.
      */
     public void close(ResultSet resultSet, Statement statement, Connection connection) throws SQLException {
-        try {
-            // Close the statement.
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
+        if (resultSet != null) {
             try {
                 // Close the result set.
                 resultSet.close();
-            } catch(SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    // Close the connection.
-                    connection.close();
-                } catch(SQLException e) {
-                    e.printStackTrace();
-                }
+            }
+        }
+        
+        if (statement != null) {
+            try {
+                // Close the statement.
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        if (connection != null) {
+            try {
+                // Close the connection.
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
+    
 
     public void checkTables() {
         try {
-            String sql = "CREATE TABLE ware(id LONG, bezeichnung VARCHAR(100), beschreibung TEXT(1000), preis VARCHAR(50), besonderheiten TEXT(1000), maengel TEXT(1000), PRIMARY KEY (id));" +
-            "CREATE TABLE vertragspartner(id VARCHAR(100), vorname VARCHAR(100), nachname VARCHAR(100), strasse VARCHAR(100), hausnr VARCHAR(100), plz VARCHAR(15), ort VARCHAR(100), PRIMARY KEY (id));";
+            String sql = "CREATE TABLE IF NOT EXISTS ware(id LONG, bezeichnung VARCHAR(100), beschreibung TEXT(1000), preis VARCHAR(50), besonderheiten TEXT(1000), maengel TEXT(1000), PRIMARY KEY (id));" +
+            "CREATE TABLE IF NOT EXISTS vertragspartner(id VARCHAR(100), vorname VARCHAR(100), nachname VARCHAR(100), strasse VARCHAR(100), hausnr VARCHAR(100), plz VARCHAR(15), ort VARCHAR(100), PRIMARY KEY (id));";
             
             if(existingConnection == null) existingConnection = getNewConnection();
             existingConnection.createStatement().executeUpdate(sql);

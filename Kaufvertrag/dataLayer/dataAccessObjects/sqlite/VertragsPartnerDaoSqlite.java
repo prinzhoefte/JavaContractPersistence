@@ -161,9 +161,10 @@ public class VertragsPartnerDaoSqlite implements IDao<IVertragspartner, String> 
             statement.setString(1, objectToUpdate.getVorname());
             statement.setString(2, objectToUpdate.getNachname());
             statement.setString(3, objectToUpdate.getAdresse().getStrasse());
-            statement.setString(4, objectToUpdate.getAdresse().getPlz());
-            statement.setString(5, objectToUpdate.getAdresse().getOrt());
-            statement.setString(6, objectToUpdate.getAusweisNr());
+            statement.setString(4, objectToUpdate.getAdresse().getHausNr());
+            statement.setString(5, objectToUpdate.getAdresse().getPlz());
+            statement.setString(6, objectToUpdate.getAdresse().getOrt());
+            statement.setString(7, objectToUpdate.getAusweisNr());
 
             // Execute the update query.
             statement.executeUpdate();
@@ -172,6 +173,7 @@ public class VertragsPartnerDaoSqlite implements IDao<IVertragspartner, String> 
             connectionManager.close(null, statement, connection);
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DaoException("Error in VertragspartnerDaoSqlite#update(IVertragspartner objectToUpdate).");
         }
     }
