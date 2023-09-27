@@ -7,7 +7,10 @@ public class Formatter {
 
     public static String ListToString(List<String> list) {
 
-        String formattedString = String.join(", ", list);
+        String formattedString = list.get(0);
+        list.remove(0);
+
+        formattedString = String.join(", ", list);
 
         return formattedString;
     }
