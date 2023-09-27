@@ -27,7 +27,6 @@ public class Programm {
             System.out.println("5: Exit");
 
             int action = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
 
             switch (action) {
                 case 1:
