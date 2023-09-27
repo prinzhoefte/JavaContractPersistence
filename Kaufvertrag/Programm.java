@@ -15,10 +15,6 @@ public class Programm {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String args[]) throws DaoException {
-
-        ConnectionManager connectionManager = new ConnectionManager();
-        connectionManager.checkTables();
-        
         DataLayerManager dataLayerManager = DataLayerManager.getInstance();
         IDataLayer dataLayer = dataLayerManager.getDataLayer();
 
@@ -106,33 +102,71 @@ public class Programm {
 
         switch (action) {
             case 1:
-                // Handle Read Vertragspartner action
-                System.out.println("Enter Ausweisnummer:");
-                String ausweisnummer = scanner.nextLine();
-                IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
-                IVertragspartner vertragspartner = vertragspartnerDao.read(ausweisnummer);
-                if (vertragspartner == null) {
-                    System.out.println("\033[H\033[2J");
-                    System.out.println("Vertragspartner with Ausweisnummer " + ausweisnummer + " not found.");
+                // Select if read one or all
+                System.out.println("\033[H\033[2J");
+                System.out.println("Choose read action:");
+                System.out.println("1: Read one Vertragspartner");
+                System.out.println("2: Read all Vertragspartner");
+                action = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
+                if(action == 1) {
+                    System.out.println("Enter Ausweisnummer:");
+                    String ausweisnummer = scanner.nextLine();
+                    IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
+                    IVertragspartner vertragspartner = vertragspartnerDao.read(ausweisnummer);
+                    if (vertragspartner == null) {
+                        System.out.println("\033[H\033[2J");
+                        System.out.println("Vertragspartner with Ausweisnummer " + ausweisnummer + " not found.");
+                    } else {
+                        System.out.println("\033[H\033[2J");
+                        System.out.println(vertragspartner);
+                    }
                 } else {
-                    System.out.println("\033[H\033[2J");
-                    System.out.println(vertragspartner);
+                    IDao<IVertragspartner, String> vertragspartnerDao = dataLayer.getDaoVertragspartner();
+                    List<IVertragspartner> vertragspartnerList = vertragspartnerDao.readAll();
+                    if (vertragspartnerList == null) {
+                        System.out.println("\033[H\033[2J");
+                        System.out.println("No Vertragspartner found.");
+                    } else {
+                        System.out.println("\033[H\033[2J");
+                        for (IVertragspartner vertragspartner : vertragspartnerList) {
+                            System.out.println(vertragspartner);
+                        }
+                    }
                 }
                 break;
             case 2:
-                // Handle Read Ware action
-                System.out.println("Enter ArtikelNr:");
-                long id = scanner.nextLong();
-                IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
-                IWare ware = wareDao.read(id);
-                if (ware == null) {
-                    System.out.println("\033[H\033[2J");
-                    System.out.println("Ware with ArtikelNr " + id + " not found.");
+                System.out.println("\033[H\033[2J");
+                System.out.println("Choose read action:");
+                System.out.println("1: Read one Ware");
+                System.out.println("2: Read all Ware");
+                action = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
+                if(action == 1) {
+                    System.out.println("Enter ArtikelNr:");
+                    long id = scanner.nextLong();
+                    IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
+                    IWare ware = wareDao.read(id);
+                    if (ware == null) {
+                        System.out.println("\033[H\033[2J");
+                        System.out.println("Ware with ArtikelNr " + id + " not found.");
+                    } else {
+                        System.out.println("\033[H\033[2J");
+                        System.out.println(ware);
+                    }
                 } else {
-                    System.out.println("\033[H\033[2J");
-                    System.out.println(ware);
+                    IDao<IWare, Long> wareDao = dataLayer.getDaoWare();
+                    List<IWare> wareList = wareDao.readAll();
+                    if (wareList == null) {
+                        System.out.println("\033[H\033[2J");
+                        System.out.println("No Ware found.");
+                    } else {
+                        System.out.println("\033[H\033[2J");
+                        for (IWare ware : wareList) {
+                            System.out.println(ware);
+                        }
+                    }
                 }
-                break;
             default:
                 System.out.println("Invalid choice. Please choose a valid option.");
                 break;
