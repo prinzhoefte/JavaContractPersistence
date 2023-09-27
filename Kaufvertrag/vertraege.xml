@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<kaufvertrag>
+            
+    
+    <vertragspartner hausnr="3" id="1" nachname="Rauch" ort="Prinzhöfte" plz="27243" strasse="Am Kürk" vorname="Justin"/>
+        
+    
+    <vertragspartner hausnr="2" id="2" nachname="Lange" ort="Harpstedt" plz="27243" strasse="Knechtstraße" vorname="Felix"/>
+    
+    <ware beschreibung="RTX 2080" besonderheiten="Alles top, Brandneu, nice, wow" bezeichnung="Grafikkarte" id="1" maengel="Keine Mängel, Hat Tüv" preis="999.99"/>
+</kaufvertrag>
