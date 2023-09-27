@@ -156,7 +156,7 @@ public class VertragsPartnerDaoSqlite implements IDao<IVertragspartner, String> 
             Connection connection = connectionManager.getNewConnection();
 
             // Define the SQL query to update a 'vertragspartner' record by its ID.
-            String sql = "UPDATE ware SET vorname = ?, nachname = ?, strasse = ?, hausnr = ?, plz = ?, ort = ? WHERE id = ?";
+            String sql = "UPDATE vertragspartner SET vorname = ?, nachname = ?, strasse = ?, hausnr = ?, plz = ?, ort = ? WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, objectToUpdate.getVorname());
             statement.setString(2, objectToUpdate.getNachname());
