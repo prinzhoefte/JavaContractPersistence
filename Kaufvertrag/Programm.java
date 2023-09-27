@@ -5,7 +5,6 @@ import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.businessObjects.Vertragspartner;
 import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.*;
-import Kaufvertrag.dataLayer.dataAccessObjects.sqlite.ConnectionManager;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
 import java.util.List;
