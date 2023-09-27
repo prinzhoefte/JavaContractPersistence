@@ -269,10 +269,10 @@ public class Programm {
 
     private static Ware getWare(Ware ware) {
         System.out.println("Enter ArtikelNr:");
-        long id = scanner.nextLong();
+        String id = scanner.nextLine();
+        long idLong = Long.parseLong(id);
         System.out.println("Enter Bezeichnung:");
         String bezeichnung = scanner.nextLine();
-        scanner.nextLine(); // Consume the newline character (Don't know why this is necessary)
         System.out.println("Enter Beschreibung:");
         String beschreibung = scanner.nextLine();
         System.out.println("Enter Preis:");
@@ -281,7 +281,7 @@ public class Programm {
         List<String> besonderheiten = enterList();
         System.out.println("Enter Mängel:");
         List<String> maengel = enterList();
-        ware.setId(id);
+        ware.setId(idLong);
         ware.setPreis(preis);
         ware.setBezeichnung(bezeichnung);
         ware.setBeschreibung(beschreibung);
