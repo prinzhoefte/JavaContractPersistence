@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class ConnectionManager {
 
     private static final String CLASSNAME = "org.sqlite.JDBC";
-    private static final String CONNECTIONSTRING = "jdbc:sqlite:database"; // includes file path
+    private static final String CONNECTIONSTRING = "jdbc:sqlite:database.db"; // includes file path from project destination
 
     private Connection existingConnection;
     private boolean classLoaded = false;
@@ -89,6 +89,19 @@ public class ConnectionManager {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public void checkTables() {
+        try {
+            String sql = "CREATE TABLE ware(id LONG, bezeichnung VARCHAR(100), beschreibung TEXT(1000), preis VARCHAR(50), besonderheiten TEXT(1000), maengel TEXT(1000), PRIMARY KEY (id));" +
+            "CREATE TABLE vertragspartner(id VARCHAR(100), vorname VARCHAR(100), nachname VARCHAR(100), strasse VARCHAR(100), hausnr VARCHAR(100), plz VARCHAR(15), ort VARCHAR(100), PRIMARY KEY (id));";
+            
+            if(existingConnection == null) existingConnection = getNewConnection();
+            existingConnection.createStatement().executeUpdate(sql);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -5,6 +5,7 @@ import Kaufvertrag.dataLayer.businessObjects.Adresse;
 import Kaufvertrag.dataLayer.businessObjects.Vertragspartner;
 import Kaufvertrag.dataLayer.businessObjects.Ware;
 import Kaufvertrag.dataLayer.dataAccessObjects.*;
+import Kaufvertrag.dataLayer.dataAccessObjects.sqlite.ConnectionManager;
 import Kaufvertrag.presentationLayer.exceptions.DaoException;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class Programm {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String args[]) throws DaoException {
+
+        ConnectionManager connectionManager = new ConnectionManager();
+        connectionManager.checkTables();
+        
         DataLayerManager dataLayerManager = DataLayerManager.getInstance();
         IDataLayer dataLayer = dataLayerManager.getDataLayer();
 
