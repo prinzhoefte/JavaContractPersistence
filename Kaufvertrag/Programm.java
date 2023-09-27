@@ -166,6 +166,7 @@ public class Programm {
                         }
                     }
                 }
+                break;
             default:
                 System.out.println("Invalid choice. Please choose a valid option.");
                 break;
